@@ -1,0 +1,61 @@
+services:
+  db:
+    image: postgres:19
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-vcraft}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vcraft}
+      POSTGRES_DB: ${POSTGRES_DB:-vcraft}
+      POSTGRES_TEST_DB: ${POSTGRES_TEST_DB:-vcraft_test}
+    ports:
+      - "5432:5432"
+    volumes:
+      # PostgreSQL 18+ stores cluster data under /var/lib/postgresql/<major>/docker.
+      - pgdata:/var/lib/postgresql
+      - ./docker/postgres/init-test-db.sh:/docker-entrypoint-initdb.d/init-test-db.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-vcraft} -d $${POSTGRES_DB:-vcraft}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_NAME: ${APP_NAME:-vCraft Bat Trang}
+      DEBUG: ${DEBUG:-true}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-vcraft}:${POSTGRES_PASSWORD:-vcraft}@db:5432/${POSTGRES_DB:-vcraft}
+      TEST_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-vcraft}:${POSTGRES_PASSWORD:-vcraft}@db:5432/${POSTGRES_TEST_DB:-vcraft_test}
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command:
+      - uvicorn
+      - app.main:create_app
+      - --factory
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --reload
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health')",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:
