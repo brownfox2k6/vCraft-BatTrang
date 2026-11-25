@@ -29,6 +29,7 @@ Hoặc chạy local với virtualenv (`.venv`):
 cp .env.example .env
 python3 -m venv .venv
 .venv/bin/pip install --upgrade pip && .venv/bin/pip install -e ".[dev]"
+.venv/bin/pre-commit install
 .venv/bin/alembic upgrade head
 .venv/bin/ruff check app tests alembic && .venv/bin/ruff format --check app tests alembic
 .venv/bin/mypy app tests alembic/env.py
