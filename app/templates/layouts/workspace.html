@@ -1,0 +1,110 @@
+{% extends "layouts/document.html" %}
+
+{% block title %}{{ page_title | default("Không gian làm việc — vCraft Bát Tràng") }}{% endblock %}
+
+{% block document_body %}
+  {% macro render_sidebar_nav(items) %}
+    <div class="flex min-h-0 flex-1 flex-col justify-between p-5">
+      <div class="space-y-6">
+        <div class="px-1">
+          {% include "partials/brand_mark.html" %}
+        </div>
+
+        <div class="border-t border-clay-border/80 pt-4">
+          <p class="px-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-terracotta">
+            {{ workspace_role_label | default("Không gian làm việc") }}
+          </p>
+          <nav class="mt-3 space-y-1.5" aria-label="Điều hướng không gian làm việc">
+            {% for item in items | default([]) %}
+              <a
+                href="{{ item.href }}"
+                class="workspace-nav-link {% if item.active %}workspace-nav-link-active{% endif %}"
+                {% if item.active %}aria-current="page"{% endif %}
+              >
+                <span>{{ item.label }}</span>
+              </a>
+            {% endfor %}
+          </nav>
+        </div>
+      </div>
+
+      <div class="mt-8 space-y-3 border-t border-clay-border/80 pt-4">
+        <p class="px-3.5 font-display text-sm italic leading-relaxed text-terracotta/90">
+          Giữ nghề · Giữ làng · Cùng vươn xa
+        </p>
+        <a href="/" class="workspace-nav-link text-ink-muted">
+          <span aria-hidden="true">&larr;</span>
+          <span>Về trang triển lãm</span>
+        </a>
+      </div>
+    </div>
+  {% endmacro %}
+
+  <div class="flex min-h-screen">
+    <aside class="hidden lg:flex lg:flex-col w-68 shrink-0 border-r border-clay-border bg-cream-deep/65">
+      {{ render_sidebar_nav(sidebar_items) }}
+    </aside>
+
+    <div
+      data-drawer-backdrop="workspace-sidebar"
+      data-drawer-close="workspace-sidebar"
+      hidden
+      class="fixed inset-0 z-40 bg-ink/40 backdrop-blur-xs lg:hidden"
+      aria-hidden="true"
+    ></div>
+
+    <aside
+      id="workspace-sidebar"
+      data-drawer="workspace-sidebar"
+      hidden
+      class="fixed inset-y-0 left-0 z-50 flex flex-col w-72 max-w-[85vw] border-r border-clay-border bg-cream shadow-2xl lg:hidden overflow-y-auto"
+      aria-label="Thanh bên di động"
+    >
+      <div class="flex shrink-0 justify-end px-4 pt-4">
+        <button
+          type="button"
+          data-drawer-close="workspace-sidebar"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-clay-border bg-white text-cobalt hover:bg-cream-deep"
+          aria-label="Đóng thanh bên"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {{ render_sidebar_nav(sidebar_items) }}
+    </aside>
+
+    <div class="flex min-w-0 flex-1 flex-col">
+      <header class="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-clay-border/80 bg-cream/95 px-4 py-3.5 backdrop-blur-md sm:px-6 lg:px-8">
+        <div class="flex items-center gap-3 min-w-0">
+          <button
+            type="button"
+            class="inline-flex lg:hidden h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-clay-border bg-white text-cobalt transition-colors hover:bg-cream-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt"
+            data-drawer-toggle="workspace-sidebar"
+            aria-controls="workspace-sidebar"
+            aria-expanded="false"
+            aria-label="Mở menu không gian làm việc"
+          >
+            {% include "partials/menu_icon.html" %}
+          </button>
+          <div class="min-w-0">
+            {% block workspace_header %}
+              <p class="truncate text-sm font-medium text-ink-muted">
+                {{ workspace_role_label | default("Không gian làm việc") }}
+              </p>
+            {% endblock %}
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 shrink-0">
+          {% block workspace_actions %}{% endblock %}
+        </div>
+      </header>
+
+      <main id="main-content" class="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-6xl">
+          {% block workspace_content %}{% endblock %}
+        </div>
+      </main>
+    </div>
+  </div>
+{% endblock %}

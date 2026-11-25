@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="relative overflow-hidden border-b border-clay-border/80 bg-gradient-to-br from-cream via-cream to-cream-deep">
+  <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+    <div class="max-w-3xl space-y-6">
+      <p class="eyebrow">Tinh hoa làng nghề</p>
+      <h1 class="heading-hero font-bold tracking-tight text-cobalt">
+        Bát Tràng, chuyện đất hóa tinh hoa
+      </h1>
+      <p class="text-lead max-w-2xl text-ink-muted">
+        Gặp người giữ nghề. Khám phá từng tác phẩm độc bản, truy xuất trọn vẹn hành trình từng lô gốm và kết nối trực tiếp với các xưởng truyền thống đã xác minh.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-3.5 pt-2">
+        <a href="/kham-pha" class="btn-primary">
+          Khám phá làng gốm
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="/ban-do" class="btn-secondary">
+          Tìm xưởng tham quan
+        </a>
+      </div>
+
+      <dl class="grid grid-cols-1 gap-4 pt-6 border-t border-clay-border/80 sm:grid-cols-3">
+        <div class="surface-card p-4">
+          <dt class="font-display text-base font-semibold text-cobalt">Gặp gỡ nghệ nhân</dt>
+          <dd class="mt-1 text-sm text-ink-muted">Hồ sơ xưởng đã được Ban Quản Lý xác minh nguồn gốc làng nghề.</dd>
+        </div>
+        <div class="surface-card p-4">
+          <dt class="font-display text-base font-semibold text-cobalt">Truy xuất lô gốm QR</dt>
+          <dd class="mt-1 text-sm text-ink-muted">Minh bạch hành trình từ ngày nhào đất, tạo dáng, vẽ men đến lúc ra lò.</dd>
+        </div>
+        <div class="surface-card p-4">
+          <dt class="font-display text-base font-semibold text-cobalt">Điều phối đơn sỉ nhiều xưởng</dt>
+          <dd class="mt-1 text-sm text-ink-muted">So sánh chào giá và kết hợp năng lực nhiều hộ gia đình cho đơn hàng lớn.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+{% endblock %}

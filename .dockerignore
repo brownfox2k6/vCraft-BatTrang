@@ -1,6 +1,7 @@
 .git
 .gitignore
 .idea
+.tools
 .venv
 .mypy_cache
 .pytest_cache

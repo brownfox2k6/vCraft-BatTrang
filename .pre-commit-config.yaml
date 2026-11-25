@@ -3,7 +3,9 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
+        exclude: ^app/static/css/app\.css$
       - id: end-of-file-fixer
+        exclude: ^app/static/css/app\.css$
       - id: check-yaml
       - id: check-toml
       - id: check-merge-conflict
@@ -20,7 +22,7 @@ repos:
     hooks:
       - id: mypy
         name: mypy (strict typecheck)
-        entry: bash -c 'if [ -x .venv/bin/mypy ]; then exec .venv/bin/mypy app tests alembic/env.py; else exec mypy app tests alembic/env.py; fi'
+        entry: bash -c 'if [ -x .venv/bin/mypy ]; then exec .venv/bin/mypy; else exec mypy; fi'
         language: system
         types: [python]
         pass_filenames: false

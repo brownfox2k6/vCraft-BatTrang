@@ -25,7 +25,16 @@ python3 -m venv .venv
 
 Sau bước này, mỗi lần `git commit` hệ thống sẽ tự động chạy `ruff check --fix`, `ruff format`, kiểm tra YAML/TOML và `mypy --strict`.
 
-## 3. Migration & Kiểm thử
+## 3. Biên dịch CSS (Tailwind CSS v4 Standalone CLI)
+
+Không cần Node.js hay `node_modules`. Khi sửa template hoặc `app/static/css/input.css`, chạy:
+
+```bash
+.venv/bin/python scripts/build_css.py          # build tối ưu (minify) ra app/static/css/app.css
+.venv/bin/python scripts/build_css.py --watch  # tự build lại khi đang phát triển
+```
+
+## 4. Migration & Kiểm thử
 
 Chạy trong container `server`:
 
@@ -38,7 +47,7 @@ Hoặc chạy bằng `.venv` ở máy local:
 
 ```bash
 .venv/bin/alembic upgrade head
-.venv/bin/ruff check app tests alembic && .venv/bin/ruff format --check app tests alembic
-.venv/bin/mypy app tests alembic/env.py
+.venv/bin/ruff check app tests alembic scripts && .venv/bin/ruff format --check app tests alembic scripts
+.venv/bin/mypy
 .venv/bin/pytest
 ```

@@ -1,0 +1,111 @@
+{% extends "layouts/document.html" %}
+
+{% block body_class %}min-h-screen flex flex-col bg-cream text-ink font-sans antialiased selection:bg-cobalt/15 selection:text-cobalt{% endblock %}
+
+{% block document_body %}
+  {% set primary_nav = [
+    {"id": "explore", "label": "Khám phá", "href": "/kham-pha"},
+    {"id": "workshops", "label": "Nghệ nhân", "href": "/xuong"},
+    {"id": "map", "label": "Bản đồ", "href": "/ban-do"},
+    {"id": "news", "label": "Tin làng nghề", "href": "/tin-lang-nghe"},
+  ] %}
+
+  <header class="sticky top-0 z-40 border-b border-clay-border/80 bg-cream/95 backdrop-blur-md">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6 lg:px-8">
+      {% include "partials/brand_mark.html" %}
+
+      <nav class="hidden lg:flex items-center gap-8" aria-label="Điều hướng chính">
+        {% for item in primary_nav %}
+          <a
+            href="{{ item.href }}"
+            class="nav-link {% if active_nav == item.id %}nav-link-active{% endif %}"
+            {% if active_nav == item.id %}aria-current="page"{% endif %}
+          >
+            {{ item.label }}
+          </a>
+        {% endfor %}
+      </nav>
+
+      <div class="hidden lg:flex items-center gap-3">
+        <a href="/dang-nhap" class="btn-secondary">Đăng nhập</a>
+        <a href="/yeu-cau-bao-gia/tao" class="btn-primary">Yêu cầu báo giá</a>
+      </div>
+
+      <button
+        type="button"
+        class="inline-flex lg:hidden h-10 w-10 items-center justify-center rounded-lg border border-clay-border bg-white/80 text-cobalt transition-colors hover:bg-cream-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt"
+        data-drawer-toggle="mobile-nav"
+        aria-controls="mobile-nav"
+        aria-expanded="false"
+        aria-label="Mở menu điều hướng"
+      >
+        {% include "partials/menu_icon.html" %}
+      </button>
+    </div>
+
+    <div
+      id="mobile-nav"
+      data-drawer="mobile-nav"
+      hidden
+      class="lg:hidden border-t border-clay-border bg-cream px-4 pb-5 pt-3 shadow-lg"
+    >
+      <nav class="flex flex-col gap-1" aria-label="Điều hướng di động">
+        {% for item in primary_nav %}
+          <a
+            href="{{ item.href }}"
+            class="rounded-lg px-3 py-2.5 text-base font-medium transition-colors {% if active_nav == item.id %}bg-cobalt-soft font-semibold text-cobalt{% else %}text-ink hover:bg-cream-deep hover:text-cobalt{% endif %}"
+            {% if active_nav == item.id %}aria-current="page"{% endif %}
+          >
+            {{ item.label }}
+          </a>
+        {% endfor %}
+      </nav>
+      <div class="mt-4 flex flex-col gap-2.5 border-t border-clay-border pt-4 sm:flex-row">
+        <a href="/dang-nhap" class="btn-secondary w-full justify-center">Đăng nhập</a>
+        <a href="/yeu-cau-bao-gia/tao" class="btn-primary w-full justify-center">Yêu cầu báo giá</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="flex-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="mt-16 border-t border-clay-border bg-cream-deep/70">
+    <div class="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div class="space-y-3">
+        {% include "partials/brand_mark.html" %}
+        <p class="max-w-sm text-sm leading-relaxed text-ink-muted">
+          Nền tảng triển lãm số, truy xuất nguồn gốc từng lô gốm và điều phối đơn hàng truyền thống của Ban Quản Lý Làng gốm Bát Tràng.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-base font-semibold text-cobalt">Khám phá làng nghề</h2>
+        <ul class="mt-3 space-y-2 text-sm text-ink-muted">
+          <li><a href="/kham-pha" class="hover:text-cobalt transition-colors">Danh mục tác phẩm</a></li>
+          <li><a href="/xuong" class="hover:text-cobalt transition-colors">Các xưởng gốm xác minh</a></li>
+          <li><a href="/ban-do" class="hover:text-cobalt transition-colors">Bản đồ tham quan làng gốm</a></li>
+          <li><a href="/tin-lang-nghe" class="hover:text-cobalt transition-colors">Tin tức cộng đồng</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-base font-semibold text-cobalt">Liên hệ Ban Quản Lý</h2>
+        <p class="mt-3 text-sm leading-relaxed text-ink-muted">
+          Thôn Bát Tràng, Xã Bát Tràng, Huyện Gia Lâm, Thành phố Hà Nội
+        </p>
+        <p class="mt-2 text-sm text-terracotta font-medium">
+          Tinh hoa làng nghề, muôn phương lan tỏa
+        </p>
+      </div>
+    </div>
+
+    <div class="border-t border-clay-border/70">
+      <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-4 text-xs text-ink-muted sm:flex-row sm:px-6 lg:px-8">
+        <span>&copy; 2026 vCraft Bát Tràng. Bảo lưu mọi quyền.</span>
+        <span>Giữ nghề · Giữ làng · Cùng vươn xa</span>
+      </div>
+    </div>
+  </footer>
+{% endblock %}

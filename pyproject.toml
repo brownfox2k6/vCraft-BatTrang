@@ -39,7 +39,7 @@ line-length = 100
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["app", "tests"]
+known-first-party = ["app", "tests", "scripts"]
 known-third-party = ["alembic"]
 
 [tool.mypy]
@@ -47,4 +47,5 @@ python_version = "3.13"
 strict = true
 warn_unused_ignores = true
 plugins = ["pydantic.mypy"]
+files = ["app", "tests", "alembic/env.py", "scripts"]
 exclude = ["alembic/versions/"]
