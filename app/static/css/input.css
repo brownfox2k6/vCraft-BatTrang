@@ -74,6 +74,51 @@
   }
 }
 
+/* Smooth crossfade applied only during an explicit Light/Dark toggle click. */
+@property --color-cream {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #FBF7F0;
+}
+
+@property --color-cream-deep {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #F3ECE0;
+}
+
+@property --color-surface {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #FFFFFF;
+}
+
+@property --color-cobalt-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #E8F0F7;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root.theme-transition,
+  :root.theme-transition *,
+  :root.theme-transition *::before,
+  :root.theme-transition *::after {
+    transition-property:
+      background-color,
+      border-color,
+      color,
+      fill,
+      stroke,
+      --color-cream,
+      --color-cream-deep,
+      --color-surface,
+      --color-cobalt-soft !important;
+    transition-duration: 240ms !important;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+}
+
 @layer components {
   .heading-hero {
     font-family: var(--font-display);

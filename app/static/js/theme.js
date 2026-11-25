@@ -4,6 +4,10 @@
 
 const STORAGE_KEY = "vcraft-theme";
 const DARK_MEDIA_QUERY = "(prefers-color-scheme: dark)";
+const TRANSITION_CLASS = "theme-transition";
+const TRANSITION_DURATION_MS = 260;
+
+let transitionTimerId = null;
 
 function getStoredTheme() {
   try {
@@ -30,11 +34,28 @@ function resolveInitialDark(mediaQuery) {
   return mediaQuery.matches;
 }
 
-function applyTheme(isDark) {
-  document.documentElement.classList.toggle("dark", isDark);
+function applyTheme(isDark, { animate = false } = {}) {
+  const root = document.documentElement;
+  if (animate) {
+    if (transitionTimerId !== null) {
+      window.clearTimeout(transitionTimerId);
+    }
+    root.classList.add(TRANSITION_CLASS);
+    // Force style flush so transitions start from the previous palette cleanly.
+    void root.offsetWidth;
+  }
+
+  root.classList.toggle("dark", isDark);
   document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
     button.setAttribute("aria-pressed", String(isDark));
   });
+
+  if (animate) {
+    transitionTimerId = window.setTimeout(() => {
+      root.classList.remove(TRANSITION_CLASS);
+      transitionTimerId = null;
+    }, TRANSITION_DURATION_MS);
+  }
 }
 
 function initThemeToggle() {
@@ -45,13 +66,13 @@ function initThemeToggle() {
     button.addEventListener("click", () => {
       const nextDark = !document.documentElement.classList.contains("dark");
       saveTheme(nextDark ? "dark" : "light");
-      applyTheme(nextDark);
+      applyTheme(nextDark, { animate: true });
     });
   });
 
   mediaQuery.addEventListener("change", (event) => {
     if (getStoredTheme() === null) {
-      applyTheme(event.matches);
+      applyTheme(event.matches, { animate: true });
     }
   });
 }

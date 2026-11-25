@@ -69,5 +69,7 @@ def test_compiled_stylesheet_defines_semantic_surface_and_dark_palette_tokens(
         "#e29a67",
         "#bfb4a6",
         "#3b332a",
+        ".theme-transition",
+        "prefers-reduced-motion:no-preference",
     ):
         assert dark_token in css
