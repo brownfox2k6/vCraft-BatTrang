@@ -74,7 +74,7 @@
   }
 }
 
-/* Smooth crossfade applied only during an explicit Light/Dark toggle click. */
+/* Register semantic colors so :root transitions every surface, text, border, SVG, and gradient in lockstep. */
 @property --color-cream {
   syntax: "<color>";
   inherits: true;
@@ -93,29 +93,98 @@
   initial-value: #FFFFFF;
 }
 
+@property --color-backdrop {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #1F2933;
+}
+
+@property --color-cobalt {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #1E4E79;
+}
+
 @property --color-cobalt-soft {
   syntax: "<color>";
   inherits: true;
   initial-value: #E8F0F7;
 }
 
+@property --color-cobalt-action {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #1E4E79;
+}
+
+@property --color-cobalt-action-hover {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #163A5B;
+}
+
+@property --color-on-cobalt {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #FFFFFF;
+}
+
+@property --color-terracotta {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #8B4513;
+}
+
+@property --color-terracotta-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #F6E9DE;
+}
+
+@property --color-ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #1F2933;
+}
+
+@property --color-ink-muted {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #5C534A;
+}
+
+@property --color-clay-border {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #E5D9C8;
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  :root.theme-transition,
-  :root.theme-transition *,
-  :root.theme-transition *::before,
-  :root.theme-transition *::after {
+  :root.theme-transition {
     transition-property:
-      background-color,
-      border-color,
-      color,
-      fill,
-      stroke,
       --color-cream,
       --color-cream-deep,
       --color-surface,
-      --color-cobalt-soft !important;
-    transition-duration: 240ms !important;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+      --color-backdrop,
+      --color-cobalt,
+      --color-cobalt-soft,
+      --color-cobalt-action,
+      --color-cobalt-action-hover,
+      --color-on-cobalt,
+      --color-terracotta,
+      --color-terracotta-soft,
+      --color-ink,
+      --color-ink-muted,
+      --color-clay-border;
+    transition-duration: 260ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Pause child color transitions during root token crossfade to prevent double-transition lag/snap. */
+  :root.theme-transition *,
+  :root.theme-transition *::before,
+  :root.theme-transition *::after {
+    transition-duration: 0s !important;
   }
 }
 

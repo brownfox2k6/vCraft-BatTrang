@@ -5,7 +5,7 @@
 const STORAGE_KEY = "vcraft-theme";
 const DARK_MEDIA_QUERY = "(prefers-color-scheme: dark)";
 const TRANSITION_CLASS = "theme-transition";
-const TRANSITION_DURATION_MS = 260;
+const TRANSITION_DURATION_MS = 320;
 
 let transitionTimerId = null;
 
