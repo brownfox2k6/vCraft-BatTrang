@@ -49,7 +49,7 @@
       data-drawer-backdrop="workspace-sidebar"
       data-drawer-close="workspace-sidebar"
       hidden
-      class="fixed inset-0 z-40 bg-ink/40 backdrop-blur-xs lg:hidden"
+      class="fixed inset-0 z-40 bg-backdrop/45 backdrop-blur-xs lg:hidden"
       aria-hidden="true"
     ></div>
 
@@ -64,7 +64,7 @@
         <button
           type="button"
           data-drawer-close="workspace-sidebar"
-          class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-clay-border bg-white text-cobalt hover:bg-cream-deep"
+          class="icon-btn h-9 w-9"
           aria-label="Đóng thanh bên"
         >
           <span aria-hidden="true">&times;</span>
@@ -78,7 +78,7 @@
         <div class="flex items-center gap-3 min-w-0">
           <button
             type="button"
-            class="inline-flex lg:hidden h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-clay-border bg-white text-cobalt transition-colors hover:bg-cream-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt"
+            class="icon-btn lg:hidden"
             data-drawer-toggle="workspace-sidebar"
             aria-controls="workspace-sidebar"
             aria-expanded="false"
@@ -96,6 +96,7 @@
         </div>
 
         <div class="flex items-center gap-3 shrink-0">
+          {% include "partials/theme_toggle.html" %}
           {% block workspace_actions %}{% endblock %}
         </div>
       </header>
