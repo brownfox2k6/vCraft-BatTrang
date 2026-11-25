@@ -1,42 +1,67 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="relative overflow-hidden border-b border-clay-border/80 bg-gradient-to-br from-cream via-cream to-cream-deep">
+<section class="relative overflow-hidden bg-gradient-to-br from-cream via-cream to-cream-deep/90">
   <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-    <div class="max-w-3xl space-y-6">
-      <p class="eyebrow">Tinh hoa làng nghề</p>
-      <h1 class="heading-hero font-bold tracking-tight text-cobalt">
-        Bát Tràng, chuyện đất hóa tinh hoa
-      </h1>
-      <p class="text-lead max-w-2xl text-ink-muted">
-        Gặp người giữ nghề. Khám phá từng tác phẩm độc bản, truy xuất trọn vẹn hành trình từng lô gốm và kết nối trực tiếp với các xưởng truyền thống đã xác minh.
-      </p>
+    <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+      <div class="space-y-6 lg:col-span-7">
+        <p class="eyebrow">Tinh hoa làng nghề</p>
+        <h1 class="heading-hero font-bold tracking-tight text-cobalt">
+          Bát Tràng, chuyện đất hóa tinh hoa
+        </h1>
+        <p class="text-lead max-w-2xl text-ink-muted">
+          Gặp người giữ nghề. Khám phá từng tác phẩm độc bản, truy xuất trọn vẹn hành trình từng lô gốm và kết nối trực tiếp với các xưởng truyền thống đã xác minh.
+        </p>
 
-      <div class="flex flex-wrap items-center gap-3.5 pt-2">
-        <a href="/kham-pha" class="btn-primary">
-          Khám phá làng gốm
-          <span aria-hidden="true">&rarr;</span>
-        </a>
-        <a href="/ban-do" class="btn-secondary">
-          Tìm xưởng tham quan
-        </a>
+        <div class="flex flex-wrap items-center gap-3.5 pt-2">
+          <a href="/kham-pha" class="btn-primary">
+            Khám phá làng gốm
+            <span aria-hidden="true">&rarr;</span>
+          </a>
+          <a href="/ban-do" class="btn-secondary">
+            Tìm xưởng tham quan
+          </a>
+        </div>
       </div>
 
-      <dl class="grid grid-cols-1 gap-4 pt-6 border-t border-clay-border/80 sm:grid-cols-3">
-        <div class="surface-card p-4">
-          <dt class="font-display text-base font-semibold text-cobalt">Gặp gỡ nghệ nhân</dt>
-          <dd class="mt-1 text-sm text-ink-muted">Hồ sơ xưởng đã được Ban Quản Lý xác minh nguồn gốc làng nghề.</dd>
+      <div class="lg:col-span-5" aria-hidden="true">
+        <div class="surface-card relative overflow-hidden p-8 sm:p-10 bg-gradient-to-br from-white via-cream to-cobalt-soft/50">
+          <div class="mx-auto flex max-w-xs flex-col items-center text-center">
+            <svg viewBox="0 0 180 180" class="h-40 w-40 sm:h-44 sm:w-44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="90" cy="90" r="82" class="text-clay-border" stroke="currentColor" stroke-width="1.25" stroke-dasharray="4 5" />
+              <circle cx="90" cy="90" r="68" class="text-cobalt-soft" fill="currentColor" />
+              <path d="M68 34h44l-5 19c16 11 26 27 26 47 0 23-13 41-25 51H72c-12-10-25-28-25-51 0-20 10-36 26-47l-5-19Z" class="text-cream" fill="currentColor" stroke="var(--color-cobalt)" stroke-width="2.2" stroke-linejoin="round" />
+              <path d="M52 93c12 7 24 7 38 0s26-7 38 0" class="text-cobalt" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+              <path d="M56 108c11 6 22 6 34 0s23-6 34 0" class="text-cobalt" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.65" />
+              <circle cx="90" cy="76" r="6" class="text-terracotta" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.6" />
+              <path d="M64 128h52" class="text-terracotta" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M65 34h50" class="text-terracotta" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+            </svg>
+            <p class="mt-5 font-display text-lg font-semibold text-cobalt">
+              Triển lãm số Làng gốm Bát Tràng
+            </p>
+            <p class="mt-1 text-xs font-medium uppercase tracking-[0.18em] text-terracotta">
+              Gia Lâm · Hà Nội
+            </p>
+          </div>
         </div>
-        <div class="surface-card p-4">
-          <dt class="font-display text-base font-semibold text-cobalt">Truy xuất lô gốm QR</dt>
-          <dd class="mt-1 text-sm text-ink-muted">Minh bạch hành trình từ ngày nhào đất, tạo dáng, vẽ men đến lúc ra lò.</dd>
-        </div>
-        <div class="surface-card p-4">
-          <dt class="font-display text-base font-semibold text-cobalt">Điều phối đơn sỉ nhiều xưởng</dt>
-          <dd class="mt-1 text-sm text-ink-muted">So sánh chào giá và kết hợp năng lực nhiều hộ gia đình cho đơn hàng lớn.</dd>
-        </div>
-      </dl>
+      </div>
     </div>
+
+    <dl class="mt-12 grid grid-cols-1 gap-5 border-t border-clay-border/80 pt-8 sm:grid-cols-3">
+      <div class="surface-card p-5">
+        <dt class="font-display text-base font-semibold text-cobalt">Gặp gỡ nghệ nhân</dt>
+        <dd class="mt-1.5 text-sm leading-relaxed text-ink-muted">Hồ sơ xưởng đã được Ban Quản lý xác minh nguồn gốc làng nghề.</dd>
+      </div>
+      <div class="surface-card p-5">
+        <dt class="font-display text-base font-semibold text-cobalt">Truy xuất lô gốm QR</dt>
+        <dd class="mt-1.5 text-sm leading-relaxed text-ink-muted">Minh bạch hành trình từ ngày nhào đất, tạo dáng, vẽ men đến lúc ra lò.</dd>
+      </div>
+      <div class="surface-card p-5">
+        <dt class="font-display text-base font-semibold text-cobalt">Điều phối đơn sỉ nhiều xưởng</dt>
+        <dd class="mt-1.5 text-sm leading-relaxed text-ink-muted">So sánh chào giá và kết hợp năng lực nhiều hộ gia đình cho đơn hàng lớn.</dd>
+      </div>
+    </dl>
   </div>
 </section>
 {% endblock %}

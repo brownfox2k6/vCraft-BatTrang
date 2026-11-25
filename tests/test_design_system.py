@@ -66,8 +66,8 @@ def test_workspace_layout_renders_reusable_sidebar_and_shared_design_system() ->
     )
 
     html = child_template.render(
-        page_title="Điều phối đơn — Ban Quản Lý",
-        workspace_role_label="Ban Quản Lý",
+        page_title="Điều phối đơn — Ban Quản lý",
+        workspace_role_label="Ban Quản lý",
         sidebar_items=[
             {"label": "Tổng quan", "href": "/quan-tri", "active": False},
             {"label": "Điều phối đơn", "href": "/quan-tri/dieu-phoi", "active": True},
@@ -78,7 +78,7 @@ def test_workspace_layout_renders_reusable_sidebar_and_shared_design_system() ->
     assert "cdn.tailwindcss.com" not in html
     assert "vCraft" in html
     assert "Bát Tràng" in html
-    assert "Ban Quản Lý" in html
+    assert "Ban Quản lý" in html
     assert "<aside" in html
     assert "<main" in html
     assert 'href="/quan-tri"' in html
