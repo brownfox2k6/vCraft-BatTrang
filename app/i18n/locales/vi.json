@@ -1,0 +1,67 @@
+{
+  "site": {
+    "title_default": "vCraft Bát Tràng",
+    "meta_description": "Triển lãm số, truy xuất nguồn gốc QR, bản đồ làng nghề và báo giá nhiều xưởng cho Làng gốm Bát Tràng.",
+    "skip_to_content": "Chuyển tới nội dung chính",
+    "tagline": "Giữ nghề · Giữ làng · Cùng vươn xa"
+  },
+  "nav": {
+    "primary_aria": "Điều hướng chính",
+    "mobile_aria": "Điều hướng di động",
+    "open_menu_aria": "Mở menu điều hướng",
+    "explore": "Khám phá",
+    "workshops": "Nghệ nhân",
+    "map": "Bản đồ",
+    "news": "Tin làng nghề",
+    "login": "Đăng nhập",
+    "rfq_cta": "Yêu cầu báo giá"
+  },
+  "lang": {
+    "switcher_aria": "Chuyển ngôn ngữ",
+    "switch_to_vi": "Chuyển sang Tiếng Việt",
+    "switch_to_en": "Chuyển sang Tiếng Anh"
+  },
+  "theme": {
+    "toggle_aria": "Chế độ giao diện tối",
+    "toggle_title": "Chuyển giao diện Sáng / Tối"
+  },
+  "footer": {
+    "description": "Nền tảng triển lãm số, truy xuất nguồn gốc từng lô gốm và điều phối đơn hàng truyền thống của Ban Quản lý Làng gốm Bát Tràng.",
+    "explore_heading": "Khám phá làng nghề",
+    "catalog": "Danh mục tác phẩm",
+    "verified_workshops": "Các xưởng gốm xác minh",
+    "village_map": "Bản đồ tham quan làng gốm",
+    "community_news": "Tin tức cộng đồng",
+    "contact_heading": "Liên hệ Ban Quản lý",
+    "address": "Làng gốm Bát Tràng, Xã Bát Tràng, Thành phố Hà Nội",
+    "motto": "Tinh hoa làng nghề, muôn phương lan tỏa",
+    "copyright": "© 2026 vCraft Bát Tràng. Bảo lưu mọi quyền."
+  },
+  "workspace": {
+    "title_default": "Không gian làm việc — vCraft Bát Tràng",
+    "role_default": "Không gian làm việc",
+    "nav_aria": "Điều hướng không gian làm việc",
+    "mobile_sidebar_aria": "Thanh bên di động",
+    "close_sidebar_aria": "Đóng thanh bên",
+    "open_menu_aria": "Mở menu không gian làm việc",
+    "back_to_exhibition": "Về trang triển lãm"
+  },
+  "home": {
+    "page_title": "vCraft Bát Tràng — Tinh hoa làng nghề, muôn phương lan tỏa",
+    "eyebrow": "Tinh hoa làng nghề",
+    "hero_title": "Bát Tràng, chuyện đất hóa tinh hoa",
+    "hero_lead": "Gặp người giữ nghề. Khám phá từng tác phẩm độc bản, truy xuất trọn vẹn hành trình từng lô gốm và kết nối trực tiếp với các xưởng truyền thống đã xác minh.",
+    "cta_explore": "Khám phá làng gốm",
+    "cta_map": "Tìm xưởng tham quan",
+    "card_title": "Triển lãm số Làng gốm Bát Tràng",
+    "card_location": "Xã Bát Tràng · Hà Nội",
+    "pillars": {
+      "artisans_title": "Gặp gỡ nghệ nhân",
+      "artisans_body": "Hồ sơ xưởng đã được Ban Quản lý xác minh nguồn gốc làng nghề.",
+      "qr_title": "Truy xuất lô gốm QR",
+      "qr_body": "Minh bạch hành trình từ ngày nhào đất, tạo dáng, vẽ men đến lúc ra lò.",
+      "rfq_title": "Điều phối đơn sỉ nhiều xưởng",
+      "rfq_body": "So sánh chào giá và kết hợp năng lực nhiều hộ gia đình cho đơn hàng lớn."
+    }
+  }
+}
