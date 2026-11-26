@@ -12,8 +12,19 @@ from app.core.config import Settings
 from app.core.security import Argon2PasswordHasher
 from app.i18n import DEFAULT_LANG, Lang, normalize_lang
 from app.i18n.catalog import translate
+from app.repositories.audit_repository import AuditRepository
 from app.repositories.auth_repository import AuthRepository
+from app.services.audit_service import AuditService
 from app.services.auth_service import AuthError, AuthService, RateLimitExceededAuthError
+
+
+def build_audit_service(
+    db: Session,
+    *,
+    clock: Callable[[], datetime],
+) -> AuditService:
+    """Construct an AuditService bound to the supplied DB session and clock."""
+    return AuditService(repository=AuditRepository(db), clock=clock)
 
 
 def build_auth_service(
@@ -23,12 +34,13 @@ def build_auth_service(
     settings: Settings,
     clock: Callable[[], datetime],
 ) -> AuthService:
-    """Construct an AuthService bound to the supplied DB session and app collaborators."""
+    """Construct an AuthService bound to the supplied DB session, audit service, and clock."""
     return AuthService(
         repository=AuthRepository(db),
         password_hasher=password_hasher,
         settings=settings,
         clock=clock,
+        audit_service=build_audit_service(db, clock=clock),
     )
 
 
@@ -59,12 +71,21 @@ def get_db(request: Request) -> Iterator[Session]:
         yield session
 
 
+def get_audit_service(
+    request: Request,
+    db: Annotated[Session, Depends(get_db)],
+) -> AuditService:
+    """Build AuditService wired with the request DB session and application clock."""
+    clock: Callable[[], datetime] = request.app.state.clock
+    return build_audit_service(db, clock=clock)
+
+
 def get_auth_service(
     request: Request,
     db: Annotated[Session, Depends(get_db)],
     settings: Annotated[Settings, Depends(get_settings)],
 ) -> AuthService:
-    """Build AuthService wired with request DB session, hasher, and clock."""
+    """Build AuthService wired with request DB session, hasher, audit service, and clock."""
     password_hasher: Argon2PasswordHasher = request.app.state.password_hasher
     clock: Callable[[], datetime] = request.app.state.clock
     return build_auth_service(

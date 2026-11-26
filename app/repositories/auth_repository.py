@@ -59,14 +59,16 @@ class AuthRepository:
         *,
         user_id: uuid.UUID,
         token_hash: str,
+        csrf_token: str,
         expires_at: datetime,
         ip_address: str | None = None,
         user_agent: str | None = None,
     ) -> UserSession:
-        """Persist a new hashed server-side session."""
+        """Persist a new hashed server-side session bound to a CSRF token."""
         user_session = UserSession(
             user_id=user_id,
             token_hash=token_hash,
+            csrf_token=csrf_token,
             expires_at=expires_at,
             ip_address=ip_address,
             user_agent=user_agent[:512] if user_agent else None,

@@ -109,7 +109,34 @@
       "account_inactive": "This account is currently inactive.",
       "rate_limited": "Too many failed sign-in attempts. Please try again in {minutes} minute(s).",
       "unauthenticated": "You are not signed in or your session has expired.",
+      "forbidden": "You do not have permission to access this resource.",
+      "csrf_invalid": "Invalid or missing CSRF security token. Please reload the page and try again.",
       "generic": "Unable to process your request right now. Please try again."
+    }
+  },
+  "errors": {
+    "403": {
+      "page_title": "Access Denied",
+      "eyebrow": "403 · Forbidden",
+      "heading": "You do not have permission for this action",
+      "back_home": "Back to Home",
+      "sign_in": "Sign in"
+    }
+  },
+  "portals": {
+    "artisan": {
+      "page_title": "Artisan Workspace",
+      "role_label": "Artisan",
+      "nav_overview": "Workshop Overview",
+      "heading": "Artisan Workspace",
+      "lead": "Manage your pottery workshop profile, ceramic listings, QR batch logs, and buyer quotes."
+    },
+    "admin": {
+      "page_title": "Management Board",
+      "role_label": "Management Board",
+      "nav_overview": "Village Overview",
+      "heading": "Bát Tràng Management Board Portal",
+      "lead": "Verify artisan workshops, coordinate multi-workshop quote requests, and review system audit logs."
     }
   }
 }

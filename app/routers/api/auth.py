@@ -10,9 +10,11 @@ from app.core.config import Settings
 from app.core.responses import ApiError, ApiResponse
 from app.i18n.catalog import translate
 from app.routers.auth_cookies import (
+    clear_csrf_cookie,
     clear_session_cookie,
     get_client_ip,
     is_secure_request,
+    set_csrf_cookie,
     set_session_cookie,
 )
 from app.routers.dependencies import (
@@ -94,11 +96,18 @@ def _session_issued_response(
         status_code=status_code,
         content=body.model_dump(mode="json"),
     )
+    secure = is_secure_request(request, settings)
     set_session_cookie(
         response,
         issued.raw_token,
         settings,
-        secure=is_secure_request(request, settings),
+        secure=secure,
+    )
+    set_csrf_cookie(
+        response,
+        issued.csrf_token,
+        settings,
+        secure=secure,
     )
     return response
 
@@ -178,17 +187,19 @@ def logout_user(
 ) -> JSONResponse:
     """Revoke the active server-side session and clear the session cookie."""
     raw_token = request.cookies.get(settings.session_cookie_name)
-    result = service.logout(raw_token)
+    result = service.logout(
+        raw_token,
+        ip_address=get_client_ip(request),
+        user_agent=request.headers.get("user-agent"),
+    )
     body = ApiResponse[LogoutResult](data=result)
     response = JSONResponse(
         status_code=status.HTTP_200_OK,
         content=body.model_dump(mode="json"),
     )
-    clear_session_cookie(
-        response,
-        settings,
-        secure=is_secure_request(request, settings),
-    )
+    secure = is_secure_request(request, settings)
+    clear_session_cookie(response, settings, secure=secure)
+    clear_csrf_cookie(response, settings, secure=secure)
     return response
 
 

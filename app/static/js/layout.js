@@ -1,6 +1,8 @@
 /**
- * Accessible drawer controller shared by the public mobile header and workspace sidebar.
+ * Accessible drawer controller and CSRF-protected logout handler shared across layouts.
  */
+
+import { apiFetch } from "./api.js";
 
 function setDrawerState(drawerName, open) {
   const drawer = document.querySelector(`[data-drawer="${drawerName}"]`);
@@ -68,15 +70,9 @@ function initLogoutForms() {
           ? nextInput.value
           : "/";
       try {
-        const response = await fetch("/api/auth/logout", {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          credentials: "same-origin",
-        });
-        if (response.ok) {
-          window.location.assign(nextValue);
-          return;
-        }
+        await apiFetch("/api/auth/logout", { method: "POST" });
+        window.location.assign(nextValue);
+        return;
       } catch {
         // Fall through to standard form submission if fetch fails.
       }

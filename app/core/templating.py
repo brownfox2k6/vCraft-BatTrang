@@ -1,4 +1,4 @@
-"""Jinja2 templating, i18n context/filters, and static asset paths shared by web routers."""
+"""Jinja2 templating, i18n context/filters, CSRF helpers, and static asset paths."""
 
 from collections.abc import Mapping
 from datetime import date, datetime
@@ -9,6 +9,7 @@ from typing import Any
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from jinja2 import pass_context
+from markupsafe import Markup, escape
 
 from app.i18n import DEFAULT_LANG, normalize_lang
 from app.i18n.catalog import translate
@@ -70,6 +71,16 @@ def _jinja_format_datetime(
     return format_datetime(value, _resolve_context_lang(context, lang))
 
 
+def _make_csrf_input_helper(field_name: str) -> Any:
+    @pass_context
+    def _jinja_csrf_input(context: Mapping[str, Any]) -> Markup:
+        token = context.get("csrf_token")
+        value = token if isinstance(token, str) else ""
+        return Markup(f'<input type="hidden" name="{escape(field_name)}" value="{escape(value)}">')
+
+    return _jinja_csrf_input
+
+
 def _i18n_context_processor(request: Request) -> dict[str, Any]:
     current_url = request.url.path or "/"
     if request.url.query:
@@ -78,11 +89,12 @@ def _i18n_context_processor(request: Request) -> dict[str, Any]:
         "lang": get_request_lang(request),
         "current_url": current_url,
         "current_user": getattr(request.state, "current_user", None),
+        "csrf_token": getattr(request.state, "csrf_token", ""),
     }
 
 
-def create_templates() -> Jinja2Templates:
-    """Create a Jinja2Templates engine with bilingual helpers and formatters registered."""
+def create_templates(*, csrf_form_field: str = "_csrf_token") -> Jinja2Templates:
+    """Create a Jinja2Templates engine with bilingual, CSRF, and formatting helpers."""
     templates = Jinja2Templates(
         directory=str(TEMPLATES_DIR),
         context_processors=[_i18n_context_processor],
@@ -90,8 +102,10 @@ def create_templates() -> Jinja2Templates:
     templates.env.globals["lang"] = DEFAULT_LANG
     templates.env.globals["current_url"] = "/"
     templates.env.globals["current_user"] = None
+    templates.env.globals["csrf_token"] = ""
     templates.env.globals["t"] = _jinja_t
     templates.env.globals["localize"] = _jinja_localize
+    templates.env.globals["csrf_input"] = _make_csrf_input_helper(csrf_form_field)
     templates.env.filters["format_currency"] = _jinja_format_currency
     templates.env.filters["format_date"] = _jinja_format_date
     templates.env.filters["format_datetime"] = _jinja_format_datetime
