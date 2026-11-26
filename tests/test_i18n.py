@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 
 from app.core.templating import create_templates
 from app.i18n import LANG_COOKIE_NAME
-from app.i18n.catalog import load_catalog, translate
+from app.i18n.catalog import LOCALES_DIR, load_catalog, translate
 from app.i18n.fallback import localized_field, pick_localized
 from app.i18n.formatting import format_currency, format_date, format_datetime
 
@@ -111,7 +111,7 @@ def test_homepage_defaults_to_vi_and_switches_to_en_via_lang_cookie(client: Test
     assert initial.status_code == 200
     assert '<html lang="vi"' in initial.text
     assert "Khám phá" in initial.text
-    assert "Bát\u00a0Tràng,\nchuyện\u00a0đất hóa\u00a0tinh\u00a0hoa" in initial.text
+    assert "Bát\u00a0Tràng,\nchuyện đất hóa tinh\u00a0hoa" in initial.text
     assert 'action="/lang"' in initial.text
 
     switch_response = client.post(
@@ -131,8 +131,8 @@ def test_homepage_defaults_to_vi_and_switches_to_en_via_lang_cookie(client: Test
     assert '<html lang="en"' in english_home.text
     assert "Explore" in english_home.text
     assert "Request a Quote" in english_home.text
-    assert "Bát\u00a0Tràng,\nwhere\u00a0clay becomes\u00a0craft" in english_home.text
-    assert "Meet the\u00a0Artisans" in english_home.text
+    assert "Bát\u00a0Tràng,\nwhere clay becomes craft" in english_home.text
+    assert "Meet the Artisans" in english_home.text
 
     back_to_vi = client.post("/lang", data={"lang": "vi", "next": "/"}, follow_redirects=False)
     assert back_to_vi.status_code == 303
@@ -288,3 +288,33 @@ def test_html_responses_include_vary_cookie_and_css_includes_view_transition(
     assert "view-transition-old(root)" in css
     assert "view-transition-new(root)" in css
     assert ".18s" in css
+
+
+def test_catalog_typography_keeps_locale_json_clean_and_binds_proper_nouns_and_widows() -> None:
+    for lang in ("vi", "en"):
+        raw = (LOCALES_DIR / f"{lang}.json").read_text(encoding="utf-8")
+        assert "\u00a0" not in raw
+        assert "\\u00a0" not in raw
+
+    vi_address = translate("footer.address", "vi")
+    assert "Làng\u00a0gốm\u00a0Bát\u00a0Tràng" in vi_address
+    assert "Xã\u00a0Bát\u00a0Tràng" in vi_address
+    assert "Thành\u00a0phố\u00a0Hà\u00a0Nội" in vi_address
+
+    vi_desc = translate("footer.description", "vi")
+    assert "Ban\u00a0Quản\u00a0lý" in vi_desc
+    assert "Làng\u00a0gốm\u00a0Bát\u00a0Tràng" in vi_desc
+    assert "Ban\u00a0Quản\u00a0lý\u00a0Làng" not in vi_desc
+
+    assert translate("home.pillars.qr_body", "vi").endswith("ra\u00a0lò.")
+    assert translate("home.pillars.qr_body", "en").endswith("kiln\u00a0firing.")
+    assert "Management\u00a0Board" in translate("footer.contact_heading", "en")
+
+    for lang in ("vi", "en"):
+        for plain_key in (
+            "site.title_default",
+            "site.meta_description",
+            "nav.primary_aria",
+            "theme.toggle_title",
+        ):
+            assert "\u00a0" not in translate(plain_key, lang)

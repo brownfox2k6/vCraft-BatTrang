@@ -26,16 +26,16 @@
     "toggle_title": "Switch Light / Dark theme"
   },
   "footer": {
-    "description": "Digital exhibition, batch-level QR traceability, and traditional order coordination platform of the Bát\u00a0Tràng Pottery Village Management\u00a0Board.",
+    "description": "Digital exhibition, batch-level QR traceability, and traditional order coordination platform of the Bát Tràng Pottery Village Management Board.",
     "explore_heading": "Explore the Village",
     "catalog": "Ceramic Collection",
     "verified_workshops": "Verified Workshops",
     "village_map": "Village Visitor Map",
     "community_news": "Community News",
-    "contact_heading": "Management\u00a0Board Contact",
-    "address": "Bát\u00a0Tràng Pottery\u00a0Village, Bát\u00a0Tràng\u00a0Commune, Hanoi",
-    "motto": "Craft village heritage, shared far and\u00a0wide",
-    "copyright": "© 2026 vCraft Bát\u00a0Tràng. All rights reserved."
+    "contact_heading": "Management Board Contact",
+    "address": "Bát Tràng Pottery Village, Bát Tràng Commune, Hanoi",
+    "motto": "Craft village heritage, shared far and wide",
+    "copyright": "© 2026 vCraft Bát Tràng. All rights reserved."
   },
   "workspace": {
     "role_default": "Workspace",
@@ -47,19 +47,19 @@
   },
   "home": {
     "eyebrow": "Craft Village Heritage",
-    "hero_title": "Bát\u00a0Tràng,\nwhere\u00a0clay becomes\u00a0craft",
-    "hero_lead": "Meet the keepers of the craft. Discover one-of-a-kind ceramics, trace every kiln\u00a0batch from clay to glaze, and connect directly with verified family\u00a0workshops.",
+    "hero_title": "Bát Tràng,\nwhere clay becomes craft",
+    "hero_lead": "Meet the keepers of the craft. Discover one-of-a-kind ceramics, trace every kiln batch from clay to glaze, and connect directly with verified family workshops.",
     "cta_explore": "Explore the Village",
     "cta_map": "Find Workshops to Visit",
-    "card_title": "Bát\u00a0Tràng Pottery\u00a0Village\nDigital\u00a0Exhibition",
-    "card_location": "Bát\u00a0Tràng Commune · Hanoi",
+    "card_title": "Bát Tràng Pottery Village\nDigital Exhibition",
+    "card_location": "Bát Tràng Commune · Hanoi",
     "pillars": {
-      "artisans_title": "Meet the\u00a0Artisans",
-      "artisans_body": "Workshop profiles verified by the Village Management\u00a0Board for authentic\u00a0provenance.",
-      "qr_title": "QR Batch\u00a0Traceability",
-      "qr_body": "Full transparency from clay preparation, shaping, and hand-glazing to kiln\u00a0firing.",
-      "rfq_title": "Multi-Workshop Wholesale\u00a0RFQ",
-      "rfq_body": "Compare quotes and coordinate capacity across family\u00a0workshops for large\u00a0orders."
+      "artisans_title": "Meet the Artisans",
+      "artisans_body": "Workshop profiles verified by the Village Management Board for authentic provenance.",
+      "qr_title": "QR Batch Traceability",
+      "qr_body": "Full transparency from clay preparation, shaping, and hand-glazing to kiln firing.",
+      "rfq_title": "Multi-Workshop Wholesale RFQ",
+      "rfq_body": "Compare quotes and coordinate capacity across family workshops for large orders."
     }
   }
 }
