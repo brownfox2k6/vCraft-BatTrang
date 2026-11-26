@@ -331,7 +331,7 @@ def test_typography_respects_word_boundaries_and_preserves_placeholders() -> Non
     assert _apply_typography("xBát Tràngy", "vi") == "xBát Tràngy"
     assert _apply_typography("Management Boards", "en") == "Management Boards"
     assert _apply_typography("The Management Board meets {place}.", "en") == (
-        "The Management\u00a0Board meets {place}."
+        "The\u00a0Management\u00a0Board meets {place}."
     )
 
 
@@ -373,3 +373,9 @@ def test_typography_binds_compounds_hyphens_quantities_and_glue_words() -> None:
         _apply_typography("để theo dõi đơn báo giá và hành trình tiến độ.", "vi")
         == "để\u00a0theo\u00a0dõi đơn\u00a0báo\u00a0giá và\u00a0hành\u00a0trình tiến\u00a0độ."
     )
+    assert "triển\u00a0lãm\u00a0số" in translate("footer.description", "vi")
+    assert "Digital\u00a0exhibition" in translate("footer.description", "en")
+    expected_case_vi = "Nghệ\u00a0nhân và\u00a0nghệ\u00a0nhân"
+    assert _apply_typography("Nghệ nhân và nghệ nhân", "vi") == expected_case_vi
+    expected_case_qty = "Các\u00a0xưởng\u00a0gốm 12\u00a0Tháng"
+    assert _apply_typography("Các xưởng gốm 12 Tháng", "vi") == expected_case_qty
