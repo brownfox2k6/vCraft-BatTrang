@@ -15,3 +15,8 @@ class Settings(BaseSettings):
     app_name: str = "vCraft Bat Trang"
     debug: bool = True
     database_url: str = "postgresql+psycopg://vcraft:vcraft@localhost:5432/vcraft"
+    session_cookie_name: str = "vcraft_session"
+    session_ttl_seconds: int = 60 * 60 * 24 * 7
+    session_cookie_secure: bool = False
+    login_rate_limit_max_attempts: int = 5
+    login_rate_limit_window_seconds: int = 60 * 15

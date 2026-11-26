@@ -56,4 +56,34 @@ function initDrawers() {
   });
 }
 
+function initLogoutForms() {
+  document.querySelectorAll("[data-logout-form]").forEach((form) => {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const nextInput = form.querySelector('input[name="next"]');
+      const nextValue =
+        nextInput instanceof HTMLInputElement &&
+        nextInput.value.startsWith("/") &&
+        !nextInput.value.startsWith("//")
+          ? nextInput.value
+          : "/";
+      try {
+        const response = await fetch("/api/auth/logout", {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          credentials: "same-origin",
+        });
+        if (response.ok) {
+          window.location.assign(nextValue);
+          return;
+        }
+      } catch {
+        // Fall through to standard form submission if fetch fails.
+      }
+      form.submit();
+    });
+  });
+}
+
 initDrawers();
+initLogoutForms();

@@ -29,7 +29,16 @@
       <div class="hidden xl:flex items-center gap-3">
         {% include "partials/lang_switcher.html" %}
         {% include "partials/theme_toggle.html" %}
-        <a href="/dang-nhap" class="btn-secondary">{{ t("nav.login") }}</a>
+        {% if current_user %}
+          <span class="max-w-44 truncate whitespace-nowrap shrink-0 text-sm font-semibold text-cobalt">
+            {{ current_user.full_name }}
+          </span>
+          <form action="/dang-xuat" method="post" data-logout-form class="shrink-0">
+            <button type="submit" class="btn-secondary">{{ t("nav.logout") }}</button>
+          </form>
+        {% else %}
+          <a href="/dang-nhap" class="btn-secondary">{{ t("nav.login") }}</a>
+        {% endif %}
         <a href="/yeu-cau-bao-gia/tao" class="btn-primary">{{ t("nav.rfq_cta") }}</a>
       </div>
 
@@ -66,8 +75,15 @@
           </a>
         {% endfor %}
       </nav>
-      <div class="mt-4 flex flex-col gap-2.5 border-t border-clay-border pt-4 sm:flex-row">
-        <a href="/dang-nhap" class="btn-secondary w-full justify-center">{{ t("nav.login") }}</a>
+      <div class="mt-4 flex flex-col gap-2.5 border-t border-clay-border pt-4 sm:flex-row sm:items-center">
+        {% if current_user %}
+          <p class="px-1 text-sm font-semibold text-cobalt sm:mr-auto">{{ current_user.full_name }}</p>
+          <form action="/dang-xuat" method="post" data-logout-form class="w-full sm:w-auto">
+            <button type="submit" class="btn-secondary w-full justify-center">{{ t("nav.logout") }}</button>
+          </form>
+        {% else %}
+          <a href="/dang-nhap" class="btn-secondary w-full justify-center">{{ t("nav.login") }}</a>
+        {% endif %}
         <a href="/yeu-cau-bao-gia/tao" class="btn-primary w-full justify-center">{{ t("nav.rfq_cta") }}</a>
       </div>
     </div>

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="bg-gradient-to-br from-cream via-cream to-cream-deep/80 py-12 sm:py-16">
+  <div class="mx-auto max-w-md px-4 sm:px-6">
+    <div class="surface-card p-6 sm:p-8">
+      <div class="space-y-2">
+        <p class="eyebrow">{{ t("auth.login.eyebrow") }}</p>
+        <h1 class="font-display text-2xl font-bold text-cobalt">{{ t("auth.login.heading") }}</h1>
+        <p class="text-sm leading-relaxed text-ink-muted">{{ t("auth.login.lead") }}</p>
+      </div>
+
+      <div
+        data-auth-alert
+        role="alert"
+        {% if not form_error %}hidden{% endif %}
+        class="alert-error mt-5"
+      >{{ form_error or "" }}</div>
+
+      <form
+        action="/dang-nhap"
+        method="post"
+        data-auth-form="login"
+        data-endpoint="/api/auth/login"
+        data-msg-validation="{{ t('auth.errors.validation_failed') }}"
+        data-msg-email-invalid="{{ t('auth.errors.email_invalid') }}"
+        data-msg-password-required="{{ t('auth.errors.password_required') }}"
+        data-msg-generic="{{ t('auth.errors.generic') }}"
+        class="mt-6 space-y-5"
+      >
+        {% if next_url %}
+          <input type="hidden" name="next" value="{{ next_url }}">
+        {% endif %}
+
+        <div>
+          <label for="login-email" class="form-label">{{ t("auth.login.email_label") }}</label>
+          <input
+            id="login-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            value="{{ form_values.email }}"
+            placeholder="{{ t('auth.login.email_placeholder') }}"
+            aria-invalid="{{ 'true' if field_errors.get('email') else 'false' }}"
+            aria-describedby="login-email-error"
+            class="form-input {% if field_errors.get('email') %}form-input-error{% endif %}"
+          >
+          <p
+            id="login-email-error"
+            data-field-error="email"
+            {% if not field_errors.get('email') %}hidden{% endif %}
+            class="form-error"
+          >{{ field_errors.get('email', '') }}</p>
+        </div>
+
+        <div>
+          <label for="login-password" class="form-label">{{ t("auth.login.password_label") }}</label>
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            placeholder="{{ t('auth.login.password_placeholder') }}"
+            aria-invalid="{{ 'true' if field_errors.get('password') else 'false' }}"
+            aria-describedby="login-password-error"
+            class="form-input {% if field_errors.get('password') %}form-input-error{% endif %}"
+          >
+          <p
+            id="login-password-error"
+            data-field-error="password"
+            {% if not field_errors.get('password') %}hidden{% endif %}
+            class="form-error"
+          >{{ field_errors.get('password', '') }}</p>
+        </div>
+
+        <button type="submit" data-auth-submit class="btn-primary w-full justify-center">
+          {{ t("auth.login.submit") }}
+        </button>
+      </form>
+
+      <div class="mt-6 space-y-3 border-t border-clay-border/80 pt-5 text-sm text-ink-muted">
+        <p class="leading-relaxed">
+          {{ t("auth.login.no_account") }}
+          <a href="/dang-ky{% if next_url %}?next={{ next_url | urlencode }}{% endif %}" class="inline-block whitespace-nowrap font-semibold text-cobalt hover:underline">{{ t("auth.login.register_link") }}</a>
+        </p>
+        <p class="leading-relaxed">
+          {{ t("auth.login.artisan_hint_prefix") }}
+          <a href="/dang-ky-xuong" class="inline-block whitespace-nowrap font-semibold text-terracotta hover:underline">{{ t("auth.login.artisan_register_link") }}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts_extra %}
+  <script type="module" src="/static/js/auth.js" defer></script>
+{% endblock %}

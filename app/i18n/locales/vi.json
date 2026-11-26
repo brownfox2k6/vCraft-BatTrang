@@ -14,6 +14,7 @@
     "map": "Bản đồ",
     "news": "Tin làng nghề",
     "login": "Đăng nhập",
+    "logout": "Đăng xuất",
     "rfq_cta": "Yêu cầu báo giá"
   },
   "lang": {
@@ -60,6 +61,55 @@
       "qr_body": "Minh bạch hành trình từ ngày nhào đất, tạo dáng, vẽ men đến lúc ra lò.",
       "rfq_title": "Điều phối đơn sỉ nhiều xưởng",
       "rfq_body": "So sánh chào giá và kết hợp năng lực nhiều hộ gia đình cho đơn hàng lớn."
+    }
+  },
+  "auth": {
+    "login": {
+      "page_title": "Đăng nhập",
+      "eyebrow": "Tài khoản thành viên",
+      "heading": "Đăng nhập vCraft Bát Tràng",
+      "lead": "Truy cập tài khoản Khách hàng, Nghệ nhân hoặc Ban Quản lý để theo dõi đơn báo giá và xưởng gốm.",
+      "email_label": "Email",
+      "email_placeholder": "ban@example.com",
+      "password_label": "Mật khẩu",
+      "password_placeholder": "Nhập mật khẩu",
+      "submit": "Đăng nhập",
+      "no_account": "Chưa có tài khoản mua sỉ hoặc du khách?",
+      "register_link": "Đăng ký tài khoản mới",
+      "artisan_hint_prefix": "Bạn là hộ gia đình nghệ nhân tại Bát Tràng?",
+      "artisan_register_link": "Gửi hồ sơ mở xưởng"
+    },
+    "register": {
+      "page_title": "Đăng ký tài khoản",
+      "eyebrow": "Khách hàng & Du khách",
+      "heading": "Tạo tài khoản Buyer mới",
+      "lead": "Đăng ký nhanh để tạo yêu cầu báo giá nhiều xưởng và theo dõi tiến độ các lô gốm truyền thống.",
+      "full_name_label": "Họ và tên",
+      "full_name_placeholder": "Nguyễn Minh An",
+      "email_label": "Email",
+      "email_placeholder": "an.nguyen@example.com",
+      "password_label": "Mật khẩu",
+      "password_hint": "Tối thiểu 8 ký tự, gồm ít nhất 1 chữ cái và 1 chữ số.",
+      "confirm_password_label": "Xác nhận mật khẩu",
+      "submit": "Tạo tài khoản & Đăng nhập",
+      "have_account": "Đã có tài khoản vCraft Bát Tràng?",
+      "login_link": "Đăng nhập ngay"
+    },
+    "errors": {
+      "validation_failed": "Vui lòng kiểm tra lại thông tin đã nhập.",
+      "full_name_invalid": "Họ và tên phải có từ 2 đến 120 ký tự.",
+      "email_invalid": "Địa chỉ email không hợp lệ.",
+      "email_exists": "Email này đã được đăng ký.",
+      "password_required": "Vui lòng nhập mật khẩu.",
+      "password_too_short": "Mật khẩu phải có ít nhất 8 ký tự.",
+      "password_too_long": "Mật khẩu không được vượt quá 128 ký tự.",
+      "password_weak": "Mật khẩu phải có ít nhất 1 chữ cái và 1 chữ số.",
+      "password_mismatch": "Mật khẩu xác nhận không khớp.",
+      "invalid_credentials": "Email hoặc mật khẩu không đúng.",
+      "account_inactive": "Tài khoản này đang bị tạm khóa.",
+      "rate_limited": "Bạn đã thử đăng nhập sai quá nhiều lần. Vui lòng thử lại sau {minutes} phút.",
+      "unauthenticated": "Bạn chưa đăng nhập hoặc phiên đã hết hạn.",
+      "generic": "Không thể xử lý yêu cầu lúc này. Vui lòng thử lại."
     }
   }
 }
