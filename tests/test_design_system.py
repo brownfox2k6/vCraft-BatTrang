@@ -12,6 +12,7 @@ def test_homepage_renders_brand_shell_without_play_cdn(client: TestClient) -> No
     assert response.headers["content-type"].startswith("text/html")
 
     html = response.text
+    assert "<title>vCraft Bát Tràng</title>" in html
     assert "/static/css/app.css" in html
     assert "/static/js/layout.js" in html
     assert "cdn.tailwindcss.com" not in html
@@ -66,7 +67,7 @@ def test_workspace_layout_renders_reusable_sidebar_and_shared_design_system() ->
     )
 
     html = child_template.render(
-        page_title="Điều phối đơn — Ban Quản lý",
+        page_title="Điều phối đơn",
         workspace_role_label="Ban Quản lý",
         sidebar_items=[
             {"label": "Tổng quan", "href": "/quan-tri", "active": False},
@@ -74,6 +75,7 @@ def test_workspace_layout_renders_reusable_sidebar_and_shared_design_system() ->
         ],
     )
 
+    assert "<title>Điều phối đơn | vCraft Bát Tràng</title>" in html
     assert "/static/css/app.css" in html
     assert "cdn.tailwindcss.com" not in html
     assert "vCraft" in html
@@ -85,3 +87,24 @@ def test_workspace_layout_renders_reusable_sidebar_and_shared_design_system() ->
     assert 'href="/quan-tri/dieu-phoi"' in html
     assert "Điều phối đơn RFQ-026" in html
     assert 'data-drawer-toggle="workspace-sidebar"' in html
+
+
+def test_subpage_and_workspace_default_titles_follow_brand_suffix_convention() -> None:
+    templates = create_templates()
+
+    subpage_template = templates.env.from_string(
+        '{% extends "base.html" %}{% block content %}<h1>Bản đồ</h1>{% endblock %}'
+    )
+    subpage_html = subpage_template.render(page_title="Bản đồ")
+    assert "<title>Bản đồ | vCraft Bát Tràng</title>" in subpage_html
+
+    workspace_template = templates.env.from_string(
+        '{% extends "layouts/workspace.html" %}'
+        "{% block workspace_content %}<p>Nội dung</p>{% endblock %}"
+    )
+    assert "<title>Không gian làm việc | vCraft Bát Tràng</title>" in workspace_template.render(
+        lang="vi", sidebar_items=[]
+    )
+    assert "<title>Workspace | vCraft Bát Tràng</title>" in workspace_template.render(
+        lang="en", sidebar_items=[]
+    )

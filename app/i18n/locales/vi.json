@@ -38,7 +38,6 @@
     "copyright": "© 2026 vCraft Bát Tràng. Bảo lưu mọi quyền."
   },
   "workspace": {
-    "title_default": "Không gian làm việc — vCraft Bát Tràng",
     "role_default": "Không gian làm việc",
     "nav_aria": "Điều hướng không gian làm việc",
     "mobile_sidebar_aria": "Thanh bên di động",
@@ -47,7 +46,6 @@
     "back_to_exhibition": "Về trang triển lãm"
   },
   "home": {
-    "page_title": "vCraft Bát Tràng — Tinh hoa làng nghề, muôn phương lan tỏa",
     "eyebrow": "Tinh hoa làng nghề",
     "hero_title": "Bát Tràng, chuyện đất hóa tinh hoa",
     "hero_lead": "Gặp người giữ nghề. Khám phá từng tác phẩm độc bản, truy xuất trọn vẹn hành trình từng lô gốm và kết nối trực tiếp với các xưởng truyền thống đã xác minh.",

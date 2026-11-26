@@ -1,6 +1,6 @@
 {% extends "layouts/document.html" %}
 
-{% block title %}{{ page_title | default(t("workspace.title_default")) }}{% endblock %}
+{% block title %}{{ page_title | default(t("workspace.role_default")) }} | {{ t("site.title_default") }}{% endblock %}
 
 {% block document_body %}
   {% macro render_sidebar_nav(items) %}

@@ -38,7 +38,6 @@
     "copyright": "© 2026 vCraft Bát Tràng. All rights reserved."
   },
   "workspace": {
-    "title_default": "Workspace — vCraft Bát Tràng",
     "role_default": "Workspace",
     "nav_aria": "Workspace navigation",
     "mobile_sidebar_aria": "Mobile sidebar",
@@ -47,7 +46,6 @@
     "back_to_exhibition": "Back to Exhibition"
   },
   "home": {
-    "page_title": "vCraft Bát Tràng — Craft village heritage, shared far and wide",
     "eyebrow": "Craft Village Heritage",
     "hero_title": "Bát Tràng, where clay becomes craft",
     "hero_lead": "Meet the keepers of the craft. Discover one-of-a-kind ceramics, trace every kiln batch from clay to glaze, and connect directly with verified family workshops.",
