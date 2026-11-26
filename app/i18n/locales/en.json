@@ -92,11 +92,11 @@
       "password_hint": "At least 8 characters, including at least 1 letter and 1 number.",
       "confirm_password_label": "Confirm password",
       "submit": "Create Account & Sign in",
-      "have_account": "Already have a vCraft Bát Tràng account?",
+      "have_account": "Already have an account?",
       "login_link": "Sign in"
     },
     "errors": {
-      "validation_failed": "Please check the highlighted fields and try again.",
+      "validation_failed": "Please review the highlighted fields.",
       "full_name_invalid": "Full name must be between 2 and 120 characters.",
       "email_invalid": "Please enter a valid email address.",
       "email_exists": "This email address is already registered.",

@@ -130,15 +130,15 @@ def test_homepage_defaults_to_vi_and_switches_to_en_via_lang_cookie(client: Test
     assert english_home.status_code == 200
     assert '<html lang="en"' in english_home.text
     assert "Explore" in english_home.text
-    assert "Request a Quote" in english_home.text
-    assert "Bát\u00a0Tràng,\nwhere clay becomes craft" in english_home.text
-    assert "Meet the Artisans" in english_home.text
+    assert "Request a\u00a0Quote" in english_home.text
+    assert "Bát\u00a0Tràng,\nwhere clay becomes\u00a0craft" in english_home.text
+    assert "Meet the\u00a0Artisans" in english_home.text
 
     back_to_vi = client.post("/lang", data={"lang": "vi", "next": "/"}, follow_redirects=False)
     assert back_to_vi.status_code == 303
     vietnamese_home = client.get("/")
     assert '<html lang="vi"' in vietnamese_home.text
-    assert "Yêu cầu báo giá" in vietnamese_home.text
+    assert "Yêu cầu báo\u00a0giá" in vietnamese_home.text
 
 
 @pytest.mark.parametrize(
@@ -204,7 +204,7 @@ def test_workspace_layout_and_jinja_helpers_render_in_selected_language() -> Non
         sidebar_items=[],
     )
     assert '<html lang="en"' in html_en
-    assert "Back to Exhibition" in html_en
+    assert "Back to\u00a0Exhibition" in html_en
     assert 'action="/lang"' in html_en
     assert "Xưởng Cổ" in html_en
     assert "48,000 VND" in html_en
@@ -295,6 +295,8 @@ def test_catalog_typography_keeps_locale_json_clean_and_binds_proper_nouns_and_w
         raw = (LOCALES_DIR / f"{lang}.json").read_text(encoding="utf-8")
         assert "\u00a0" not in raw
         assert "\\u00a0" not in raw
+        assert "\u2011" not in raw
+        assert "\\u2011" not in raw
 
     vi_address = translate("footer.address", "vi")
     assert "Làng\u00a0gốm\u00a0Bát\u00a0Tràng" in vi_address
@@ -330,4 +332,44 @@ def test_typography_respects_word_boundaries_and_preserves_placeholders() -> Non
     assert _apply_typography("Management Boards", "en") == "Management Boards"
     assert _apply_typography("The Management Board meets {place}.", "en") == (
         "The Management\u00a0Board meets {place}."
+    )
+
+
+def test_typography_binds_compounds_hyphens_quantities_and_glue_words() -> None:
+    expected_en_lead = (
+        "Discover one\u2011of\u2011a\u2011kind ceramics with\u00a0verified family\u00a0workshops."
+    )
+    assert (
+        _apply_typography("Discover one-of-a-kind ceramics with verified family workshops.", "en")
+        == expected_en_lead
+    )
+    assert (
+        _apply_typography("At least 8 characters, including at least 1 letter and 1 number.", "en")
+        == "At least 8\u00a0characters, including at least 1\u00a0letter and\u00a01\u00a0number."
+    )
+    expected_vi_hint = (
+        "Tối thiểu 8\u00a0ký\u00a0tự, gồm ít nhất 1\u00a0chữ\u00a0cái và\u00a01\u00a0chữ\u00a0số."
+    )
+    assert (
+        _apply_typography("Tối thiểu 8 ký tự, gồm ít nhất 1 chữ cái và 1 chữ số.", "vi")
+        == expected_vi_hint
+    )
+    assert (
+        _apply_typography("Bạn là hộ gia đình nghệ nhân tại Bát Tràng?", "vi")
+        == "Bạn là hộ\u00a0gia\u00a0đình nghệ\u00a0nhân tại\u00a0Bát\u00a0Tràng?"
+    )
+    assert (
+        _apply_typography("© 2026 vCraft Bát Tràng.", "vi") == "© 2026 vCraft\u00a0Bát\u00a0Tràng."
+    )
+    assert (
+        _apply_typography("Already have a vCraft Bát Tràng account?", "en")
+        == "Already have a\u00a0vCraft\u00a0Bát\u00a0Tràng account?"
+    )
+    assert (
+        _apply_typography("Sign in to vCraft Bát Tràng", "en")
+        == "Sign in to\u00a0vCraft\u00a0Bát\u00a0Tràng"
+    )
+    assert (
+        _apply_typography("để theo dõi đơn báo giá và hành trình tiến độ.", "vi")
+        == "để\u00a0theo\u00a0dõi đơn\u00a0báo\u00a0giá và\u00a0hành\u00a0trình tiến\u00a0độ."
     )

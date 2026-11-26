@@ -41,10 +41,25 @@ def _seed_user(
 @pytest.mark.parametrize(
     ("path", "lang", "expected_title", "expected_heading"),
     [
-        ("/dang-nhap", "vi", "Đăng nhập | vCraft Bát Tràng", "Đăng nhập vCraft"),
-        ("/dang-nhap", "en", "Sign in | vCraft Bát Tràng", "Sign in to vCraft"),
-        ("/dang-ky", "vi", "Đăng ký tài khoản | vCraft Bát Tràng", "Tạo tài khoản Buyer"),
-        ("/dang-ky", "en", "Create Account | vCraft Bát Tràng", "Create a Buyer Account"),
+        (
+            "/dang-nhap",
+            "vi",
+            "Đăng nhập | vCraft Bát Tràng",
+            "Đăng nhập vCraft\u00a0Bát\u00a0Tràng",
+        ),
+        (
+            "/dang-nhap",
+            "en",
+            "Sign in | vCraft Bát Tràng",
+            "Sign in to\u00a0vCraft\u00a0Bát\u00a0Tràng",
+        ),
+        (
+            "/dang-ky",
+            "vi",
+            "Đăng ký tài khoản | vCraft Bát Tràng",
+            "Tạo tài\u00a0khoản Buyer\u00a0mới",
+        ),
+        ("/dang-ky", "en", "Create Account | vCraft Bát Tràng", "Create a\u00a0Buyer Account"),
     ],
 )
 def test_auth_pages_render_bilingually_with_validation_and_vary_cookie(

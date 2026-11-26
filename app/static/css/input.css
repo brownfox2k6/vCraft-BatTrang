@@ -271,6 +271,6 @@
   }
 
   .alert-error {
-    @apply rounded-xl border border-terracotta/40 bg-terracotta-soft px-4 py-3 text-sm font-medium text-terracotta;
+    @apply rounded-xl border border-terracotta/40 bg-terracotta-soft px-4 py-3 text-sm font-medium text-pretty text-terracotta;
   }
 }
