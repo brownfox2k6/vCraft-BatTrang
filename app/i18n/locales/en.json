@@ -14,6 +14,7 @@
     "map": "Map",
     "news": "Village News",
     "login": "Sign in",
+    "logout": "Sign out",
     "rfq_cta": "Request a Quote"
   },
   "lang": {
@@ -60,6 +61,55 @@
       "qr_body": "Full transparency from clay preparation, shaping, and hand-glazing to kiln firing.",
       "rfq_title": "Multi-Workshop Wholesale RFQ",
       "rfq_body": "Compare quotes and coordinate capacity across family workshops for large orders."
+    }
+  },
+  "auth": {
+    "login": {
+      "page_title": "Sign in",
+      "eyebrow": "Member Account",
+      "heading": "Sign in to vCraft Bát Tràng",
+      "lead": "Access your Buyer, Artisan, or Management Board account to manage quote requests and ceramic workshops.",
+      "email_label": "Email",
+      "email_placeholder": "you@example.com",
+      "password_label": "Password",
+      "password_placeholder": "Enter your password",
+      "submit": "Sign in",
+      "no_account": "New wholesale buyer or visitor?",
+      "register_link": "Create an account",
+      "artisan_hint_prefix": "Are you a Bát Tràng pottery workshop?",
+      "artisan_register_link": "Submit a workshop application"
+    },
+    "register": {
+      "page_title": "Create Account",
+      "eyebrow": "Buyer & Visitor",
+      "heading": "Create a Buyer Account",
+      "lead": "Register in seconds to submit multi-workshop quote requests and follow batch progress.",
+      "full_name_label": "Full name",
+      "full_name_placeholder": "Minh An Nguyen",
+      "email_label": "Email",
+      "email_placeholder": "an.nguyen@example.com",
+      "password_label": "Password",
+      "password_hint": "At least 8 characters, including at least 1 letter and 1 number.",
+      "confirm_password_label": "Confirm password",
+      "submit": "Create Account & Sign in",
+      "have_account": "Already have a vCraft Bát Tràng account?",
+      "login_link": "Sign in"
+    },
+    "errors": {
+      "validation_failed": "Please check the highlighted fields and try again.",
+      "full_name_invalid": "Full name must be between 2 and 120 characters.",
+      "email_invalid": "Please enter a valid email address.",
+      "email_exists": "This email address is already registered.",
+      "password_required": "Please enter your password.",
+      "password_too_short": "Password must be at least 8 characters.",
+      "password_too_long": "Password must not exceed 128 characters.",
+      "password_weak": "Password must include at least 1 letter and 1 number.",
+      "password_mismatch": "Password confirmation does not match.",
+      "invalid_credentials": "Incorrect email or password.",
+      "account_inactive": "This account is currently inactive.",
+      "rate_limited": "Too many failed sign-in attempts. Please try again in {minutes} minute(s).",
+      "unauthenticated": "You are not signed in or your session has expired.",
+      "generic": "Unable to process your request right now. Please try again."
     }
   }
 }

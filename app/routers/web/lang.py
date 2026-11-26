@@ -6,24 +6,16 @@ from urllib.parse import urlsplit
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import RedirectResponse
 
+from app.core.redirects import is_safe_local_path
 from app.i18n import LANG_COOKIE_MAX_AGE, LANG_COOKIE_NAME, normalize_lang
 
 router = APIRouter(tags=["web"])
 
 
-def _is_safe_local_path(candidate: str) -> bool:
-    if not candidate.startswith("/") or candidate.startswith("//"):
-        return False
-    if "\\" in candidate or "\r" in candidate or "\n" in candidate:
-        return False
-    parsed = urlsplit(candidate)
-    return parsed.scheme == "" and parsed.netloc == ""
-
-
 def _resolve_redirect_target(request: Request, next_url: str | None) -> str:
     if next_url is not None and next_url.strip():
         cleaned = next_url.strip()
-        if _is_safe_local_path(cleaned):
+        if is_safe_local_path(cleaned):
             return cleaned
         return "/"
 
@@ -34,7 +26,7 @@ def _resolve_redirect_target(request: Request, next_url: str | None) -> str:
             rebuilt = parsed.path or "/"
             if parsed.query:
                 rebuilt = f"{rebuilt}?{parsed.query}"
-            if _is_safe_local_path(rebuilt):
+            if is_safe_local_path(rebuilt):
                 return rebuilt
     return "/"
 

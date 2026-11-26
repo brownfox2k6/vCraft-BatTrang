@@ -14,6 +14,8 @@ _PLAIN_TEXT_KEYS: frozenset[str] = frozenset(
         "site.title_default",
         "site.meta_description",
         "theme.toggle_title",
+        "auth.login.page_title",
+        "auth.register.page_title",
     }
 )
 
@@ -108,7 +110,7 @@ def load_catalog(lang: Lang) -> dict[str, str]:
     return {
         key: (
             value
-            if key in _PLAIN_TEXT_KEYS or key.endswith("_aria")
+            if key in _PLAIN_TEXT_KEYS or key.endswith("_aria") or key.startswith("auth.errors.")
             else _apply_typography(value, lang)
         )
         for key, value in flattened.items()

@@ -253,4 +253,24 @@
   .workspace-nav-link-active {
     @apply bg-cobalt-action font-semibold text-on-cobalt shadow-xs hover:bg-cobalt-action-hover hover:text-on-cobalt;
   }
+
+  .form-label {
+    @apply block text-sm font-medium text-ink;
+  }
+
+  .form-input {
+    @apply mt-1.5 block w-full rounded-lg border border-clay-border bg-cream/60 px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted/70 transition-colors focus:border-cobalt focus:bg-surface focus:outline-2 focus:outline-offset-0 focus:outline-cobalt/30;
+  }
+
+  .form-input-error {
+    @apply border-terracotta focus:border-terracotta focus:outline-terracotta/30;
+  }
+
+  .form-error {
+    @apply mt-1.5 text-xs font-medium text-terracotta;
+  }
+
+  .alert-error {
+    @apply rounded-xl border border-terracotta/40 bg-terracotta-soft px-4 py-3 text-sm font-medium text-terracotta;
+  }
 }

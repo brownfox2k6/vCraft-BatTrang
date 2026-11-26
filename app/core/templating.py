@@ -77,6 +77,7 @@ def _i18n_context_processor(request: Request) -> dict[str, Any]:
     return {
         "lang": get_request_lang(request),
         "current_url": current_url,
+        "current_user": getattr(request.state, "current_user", None),
     }
 
 
@@ -88,6 +89,7 @@ def create_templates() -> Jinja2Templates:
     )
     templates.env.globals["lang"] = DEFAULT_LANG
     templates.env.globals["current_url"] = "/"
+    templates.env.globals["current_user"] = None
     templates.env.globals["t"] = _jinja_t
     templates.env.globals["localize"] = _jinja_localize
     templates.env.filters["format_currency"] = _jinja_format_currency

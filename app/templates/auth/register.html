@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="bg-gradient-to-br from-cream via-cream to-cream-deep/80 py-12 sm:py-16">
+  <div class="mx-auto max-w-md px-4 sm:px-6">
+    <div class="surface-card p-6 sm:p-8">
+      <div class="space-y-2">
+        <p class="eyebrow">{{ t("auth.register.eyebrow") }}</p>
+        <h1 class="font-display text-2xl font-bold text-cobalt">{{ t("auth.register.heading") }}</h1>
+        <p class="text-sm leading-relaxed text-ink-muted">{{ t("auth.register.lead") }}</p>
+      </div>
+
+      <div
+        data-auth-alert
+        role="alert"
+        {% if not form_error %}hidden{% endif %}
+        class="alert-error mt-5"
+      >{{ form_error or "" }}</div>
+
+      <form
+        action="/dang-ky"
+        method="post"
+        data-auth-form="register"
+        data-endpoint="/api/auth/register"
+        data-msg-validation="{{ t('auth.errors.validation_failed') }}"
+        data-msg-full-name-invalid="{{ t('auth.errors.full_name_invalid') }}"
+        data-msg-email-invalid="{{ t('auth.errors.email_invalid') }}"
+        data-msg-password-too-short="{{ t('auth.errors.password_too_short') }}"
+        data-msg-password-too-long="{{ t('auth.errors.password_too_long') }}"
+        data-msg-password-weak="{{ t('auth.errors.password_weak') }}"
+        data-msg-password-mismatch="{{ t('auth.errors.password_mismatch') }}"
+        data-msg-generic="{{ t('auth.errors.generic') }}"
+        class="mt-6 space-y-5"
+      >
+        {% if next_url %}
+          <input type="hidden" name="next" value="{{ next_url }}">
+        {% endif %}
+
+        <div>
+          <label for="register-full-name" class="form-label">{{ t("auth.register.full_name_label") }}</label>
+          <input
+            id="register-full-name"
+            name="full_name"
+            type="text"
+            autocomplete="name"
+            required
+            minlength="2"
+            maxlength="120"
+            value="{{ form_values.full_name }}"
+            placeholder="{{ t('auth.register.full_name_placeholder') }}"
+            aria-invalid="{{ 'true' if field_errors.get('full_name') else 'false' }}"
+            aria-describedby="register-full-name-error"
+            class="form-input {% if field_errors.get('full_name') %}form-input-error{% endif %}"
+          >
+          <p
+            id="register-full-name-error"
+            data-field-error="full_name"
+            {% if not field_errors.get('full_name') %}hidden{% endif %}
+            class="form-error"
+          >{{ field_errors.get('full_name', '') }}</p>
+        </div>
+
+        <div>
+          <label for="register-email" class="form-label">{{ t("auth.register.email_label") }}</label>
+          <input
+            id="register-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            value="{{ form_values.email }}"
+            placeholder="{{ t('auth.register.email_placeholder') }}"
+            aria-invalid="{{ 'true' if field_errors.get('email') else 'false' }}"
+            aria-describedby="register-email-error"
+            class="form-input {% if field_errors.get('email') %}form-input-error{% endif %}"
+          >
+          <p
+            id="register-email-error"
+            data-field-error="email"
+            {% if not field_errors.get('email') %}hidden{% endif %}
+            class="form-error"
+          >{{ field_errors.get('email', '') }}</p>
+        </div>
+
+        <div>
+          <label for="register-password" class="form-label">{{ t("auth.register.password_label") }}</label>
+          <input
+            id="register-password"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            required
+            minlength="8"
+            maxlength="128"
+            aria-invalid="{{ 'true' if field_errors.get('password') else 'false' }}"
+            aria-describedby="register-password-hint register-password-error"
+            class="form-input {% if field_errors.get('password') %}form-input-error{% endif %}"
+          >
+          <p id="register-password-hint" class="mt-1.5 text-xs text-ink-muted">
+            {{ t("auth.register.password_hint") }}
+          </p>
+          <p
+            id="register-password-error"
+            data-field-error="password"
+            {% if not field_errors.get('password') %}hidden{% endif %}
+            class="form-error"
+          >{{ field_errors.get('password', '') }}</p>
+        </div>
+
+        <div>
+          <label for="register-confirm-password" class="form-label">{{ t("auth.register.confirm_password_label") }}</label>
+          <input
+            id="register-confirm-password"
+            name="confirm_password"
+            type="password"
+            autocomplete="new-password"
+            required
+            minlength="8"
+            maxlength="128"
+            aria-invalid="{{ 'true' if field_errors.get('confirm_password') else 'false' }}"
+            aria-describedby="register-confirm-password-error"
+            class="form-input {% if field_errors.get('confirm_password') %}form-input-error{% endif %}"
+          >
+          <p
+            id="register-confirm-password-error"
+            data-field-error="confirm_password"
+            {% if not field_errors.get('confirm_password') %}hidden{% endif %}
+            class="form-error"
+          >{{ field_errors.get('confirm_password', '') }}</p>
+        </div>
+
+        <button type="submit" data-auth-submit class="btn-primary w-full justify-center">
+          {{ t("auth.register.submit") }}
+        </button>
+      </form>
+
+      <div class="mt-6 border-t border-clay-border/80 pt-5 text-sm text-ink-muted">
+        <p>
+          {{ t("auth.register.have_account") }}
+          <a href="/dang-nhap{% if next_url %}?next={{ next_url | urlencode }}{% endif %}" class="font-semibold text-cobalt hover:underline">
+            {{ t("auth.register.login_link") }}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts_extra %}
+  <script type="module" src="/static/js/auth.js" defer></script>
+{% endblock %}
