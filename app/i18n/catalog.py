@@ -21,6 +21,7 @@ _PLAIN_TEXT_KEYS: frozenset[str] = frozenset(
 
 _NON_BREAKING_PHRASES: dict[Lang, tuple[str, ...]] = {
     "vi": (
+        "vCraft Bát Tràng",
         "Làng gốm Bát Tràng",
         "Thành phố Hà Nội",
         "Xã Bát Tràng",
@@ -31,6 +32,7 @@ _NON_BREAKING_PHRASES: dict[Lang, tuple[str, ...]] = {
         "lô gốm QR",
     ),
     "en": (
+        "vCraft Bát Tràng",
         "Bát Tràng Commune",
         "Bát Tràng",
         "Pottery Village",

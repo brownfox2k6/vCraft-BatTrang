@@ -309,6 +309,8 @@ def test_catalog_typography_keeps_locale_json_clean_and_binds_proper_nouns_and_w
     assert translate("home.pillars.qr_body", "vi").endswith("ra\u00a0lò.")
     assert translate("home.pillars.qr_body", "en").endswith("kiln\u00a0firing.")
     assert "Management\u00a0Board" in translate("footer.contact_heading", "en")
+    assert "vCraft\u00a0Bát\u00a0Tràng" in translate("auth.login.heading", "vi")
+    assert "vCraft\u00a0Bát\u00a0Tràng" in translate("auth.login.heading", "en")
 
     for lang in ("vi", "en"):
         for plain_key in (

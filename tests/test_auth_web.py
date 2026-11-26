@@ -69,6 +69,7 @@ def test_auth_pages_render_bilingually_with_validation_and_vary_cookie(
     assert 'type="email"' in html
     assert "required" in html
     assert "demo" not in html.lower()
+    assert "inline-block whitespace-nowrap" in html
     if path == "/dang-ky":
         assert 'minlength="8"' in html
         assert 'name="confirm_password"' in html

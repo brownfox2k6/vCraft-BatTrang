@@ -80,18 +80,14 @@
         </button>
       </form>
 
-      <div class="mt-6 space-y-2 border-t border-clay-border/80 pt-5 text-sm text-ink-muted">
-        <p>
+      <div class="mt-6 space-y-3 border-t border-clay-border/80 pt-5 text-sm text-ink-muted">
+        <p class="leading-relaxed">
           {{ t("auth.login.no_account") }}
-          <a href="/dang-ky{% if next_url %}?next={{ next_url | urlencode }}{% endif %}" class="font-semibold text-cobalt hover:underline">
-            {{ t("auth.login.register_link") }}
-          </a>
+          <a href="/dang-ky{% if next_url %}?next={{ next_url | urlencode }}{% endif %}" class="inline-block whitespace-nowrap font-semibold text-cobalt hover:underline">{{ t("auth.login.register_link") }}</a>
         </p>
-        <p>
+        <p class="leading-relaxed">
           {{ t("auth.login.artisan_hint_prefix") }}
-          <a href="/dang-ky-xuong" class="font-semibold text-terracotta hover:underline">
-            {{ t("auth.login.artisan_register_link") }}
-          </a>
+          <a href="/dang-ky-xuong" class="inline-block whitespace-nowrap font-semibold text-terracotta hover:underline">{{ t("auth.login.artisan_register_link") }}</a>
         </p>
       </div>
     </div>
