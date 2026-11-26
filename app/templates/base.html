@@ -4,17 +4,17 @@
 
 {% block document_body %}
   {% set primary_nav = [
-    {"id": "explore", "label": "Khám phá", "href": "/kham-pha"},
-    {"id": "workshops", "label": "Nghệ nhân", "href": "/xuong"},
-    {"id": "map", "label": "Bản đồ", "href": "/ban-do"},
-    {"id": "news", "label": "Tin làng nghề", "href": "/tin-lang-nghe"},
+    {"id": "explore", "label": t("nav.explore"), "href": "/kham-pha"},
+    {"id": "workshops", "label": t("nav.workshops"), "href": "/xuong"},
+    {"id": "map", "label": t("nav.map"), "href": "/ban-do"},
+    {"id": "news", "label": t("nav.news"), "href": "/tin-lang-nghe"},
   ] %}
 
   <header class="sticky top-0 z-40 border-b border-clay-border/80 bg-cream/95 backdrop-blur-md">
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6 lg:px-8">
       {% include "partials/brand_mark.html" %}
 
-      <nav class="hidden lg:flex items-center gap-8" aria-label="Điều hướng chính">
+      <nav class="hidden lg:flex items-center gap-8" aria-label="{{ t('nav.primary_aria') }}">
         {% for item in primary_nav %}
           <a
             href="{{ item.href }}"
@@ -27,12 +27,14 @@
       </nav>
 
       <div class="hidden lg:flex items-center gap-3">
+        {% include "partials/lang_switcher.html" %}
         {% include "partials/theme_toggle.html" %}
-        <a href="/dang-nhap" class="btn-secondary">Đăng nhập</a>
-        <a href="/yeu-cau-bao-gia/tao" class="btn-primary">Yêu cầu báo giá</a>
+        <a href="/dang-nhap" class="btn-secondary">{{ t("nav.login") }}</a>
+        <a href="/yeu-cau-bao-gia/tao" class="btn-primary">{{ t("nav.rfq_cta") }}</a>
       </div>
 
       <div class="flex lg:hidden items-center gap-2">
+        {% include "partials/lang_switcher.html" %}
         {% include "partials/theme_toggle.html" %}
         <button
           type="button"
@@ -40,7 +42,7 @@
           data-drawer-toggle="mobile-nav"
           aria-controls="mobile-nav"
           aria-expanded="false"
-          aria-label="Mở menu điều hướng"
+          aria-label="{{ t('nav.open_menu_aria') }}"
         >
           {% include "partials/menu_icon.html" %}
         </button>
@@ -53,7 +55,7 @@
       hidden
       class="lg:hidden border-t border-clay-border bg-cream px-4 pb-5 pt-3 shadow-lg"
     >
-      <nav class="flex flex-col gap-1" aria-label="Điều hướng di động">
+      <nav class="flex flex-col gap-1" aria-label="{{ t('nav.mobile_aria') }}">
         {% for item in primary_nav %}
           <a
             href="{{ item.href }}"
@@ -65,8 +67,8 @@
         {% endfor %}
       </nav>
       <div class="mt-4 flex flex-col gap-2.5 border-t border-clay-border pt-4 sm:flex-row">
-        <a href="/dang-nhap" class="btn-secondary w-full justify-center">Đăng nhập</a>
-        <a href="/yeu-cau-bao-gia/tao" class="btn-primary w-full justify-center">Yêu cầu báo giá</a>
+        <a href="/dang-nhap" class="btn-secondary w-full justify-center">{{ t("nav.login") }}</a>
+        <a href="/yeu-cau-bao-gia/tao" class="btn-primary w-full justify-center">{{ t("nav.rfq_cta") }}</a>
       </div>
     </div>
   </header>
@@ -80,35 +82,35 @@
       <div class="space-y-3">
         {% include "partials/brand_mark.html" %}
         <p class="max-w-sm text-sm leading-relaxed text-ink-muted">
-          Nền tảng triển lãm số, truy xuất nguồn gốc từng lô gốm và điều phối đơn hàng truyền thống của Ban Quản lý Làng gốm Bát Tràng.
+          {{ t("footer.description") }}
         </p>
       </div>
 
       <div>
-        <h2 class="text-base font-semibold text-cobalt">Khám phá làng nghề</h2>
+        <h2 class="text-base font-semibold text-cobalt">{{ t("footer.explore_heading") }}</h2>
         <ul class="mt-3 space-y-2 text-sm text-ink-muted">
-          <li><a href="/kham-pha" class="hover:text-cobalt transition-colors">Danh mục tác phẩm</a></li>
-          <li><a href="/xuong" class="hover:text-cobalt transition-colors">Các xưởng gốm xác minh</a></li>
-          <li><a href="/ban-do" class="hover:text-cobalt transition-colors">Bản đồ tham quan làng gốm</a></li>
-          <li><a href="/tin-lang-nghe" class="hover:text-cobalt transition-colors">Tin tức cộng đồng</a></li>
+          <li><a href="/kham-pha" class="hover:text-cobalt transition-colors">{{ t("footer.catalog") }}</a></li>
+          <li><a href="/xuong" class="hover:text-cobalt transition-colors">{{ t("footer.verified_workshops") }}</a></li>
+          <li><a href="/ban-do" class="hover:text-cobalt transition-colors">{{ t("footer.village_map") }}</a></li>
+          <li><a href="/tin-lang-nghe" class="hover:text-cobalt transition-colors">{{ t("footer.community_news") }}</a></li>
         </ul>
       </div>
 
       <div>
-        <h2 class="text-base font-semibold text-cobalt">Liên hệ Ban Quản lý</h2>
+        <h2 class="text-base font-semibold text-cobalt">{{ t("footer.contact_heading") }}</h2>
         <p class="mt-3 text-sm leading-relaxed text-ink-muted">
-          Làng gốm Bát Tràng, Xã Bát Tràng, Thành phố Hà Nội
+          {{ t("footer.address") }}
         </p>
         <p class="mt-2 text-sm text-terracotta font-medium">
-          Tinh hoa làng nghề, muôn phương lan tỏa
+          {{ t("footer.motto") }}
         </p>
       </div>
     </div>
 
     <div class="border-t border-clay-border/70">
       <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-4 text-xs text-ink-muted sm:flex-row sm:px-6 lg:px-8">
-        <span>&copy; 2026 vCraft Bát Tràng. Bảo lưu mọi quyền.</span>
-        <span>Giữ nghề · Giữ làng · Cùng vươn xa</span>
+        <span>{{ t("footer.copyright") }}</span>
+        <span>{{ t("site.tagline") }}</span>
       </div>
     </div>
   </footer>

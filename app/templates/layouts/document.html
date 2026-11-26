@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="{{ lang }}" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}{{ page_title | default("vCraft Bát Tràng") }}{% endblock %}</title>
-  <meta name="description" content="{% block meta_description %}Triển lãm số, truy xuất nguồn gốc QR, bản đồ làng nghề và báo giá nhiều xưởng cho Làng gốm Bát Tràng.{% endblock %}">
+  <title>{% block title %}{{ page_title | default(t("site.title_default")) }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ t('site.meta_description') }}{% endblock %}">
   <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
   <script>
     (() => {
@@ -25,7 +25,7 @@
 </head>
 <body class="{% block body_class %}min-h-screen bg-cream text-ink font-sans antialiased selection:bg-cobalt/15 selection:text-cobalt{% endblock %}">
   <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-cobalt-action focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-cobalt">
-    Chuyển tới nội dung chính
+    {{ t("site.skip_to_content") }}
   </a>
 
   {% block document_body %}{% endblock %}

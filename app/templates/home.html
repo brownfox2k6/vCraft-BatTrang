@@ -5,21 +5,21 @@
   <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
     <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
       <div class="space-y-6 lg:col-span-7">
-        <p class="eyebrow">Tinh hoa làng nghề</p>
+        <p class="eyebrow">{{ t("home.eyebrow") }}</p>
         <h1 class="heading-hero font-bold tracking-tight text-cobalt">
-          Bát Tràng, chuyện đất hóa tinh hoa
+          {{ t("home.hero_title") }}
         </h1>
         <p class="text-lead max-w-2xl text-ink-muted">
-          Gặp người giữ nghề. Khám phá từng tác phẩm độc bản, truy xuất trọn vẹn hành trình từng lô gốm và kết nối trực tiếp với các xưởng truyền thống đã xác minh.
+          {{ t("home.hero_lead") }}
         </p>
 
         <div class="flex flex-wrap items-center gap-3.5 pt-2">
           <a href="/kham-pha" class="btn-primary">
-            Khám phá làng gốm
+            {{ t("home.cta_explore") }}
             <span aria-hidden="true">&rarr;</span>
           </a>
           <a href="/ban-do" class="btn-secondary">
-            Tìm xưởng tham quan
+            {{ t("home.cta_map") }}
           </a>
         </div>
       </div>
@@ -38,10 +38,10 @@
               <path d="M65 34h50" class="text-terracotta" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
             </svg>
             <p class="mt-5 font-display text-lg font-semibold text-cobalt">
-              Triển lãm số Làng gốm Bát Tràng
+              {{ t("home.card_title") }}
             </p>
             <p class="mt-1 text-xs font-medium uppercase tracking-[0.18em] text-terracotta">
-              Xã Bát Tràng · Hà Nội
+              {{ t("home.card_location") }}
             </p>
           </div>
         </div>
@@ -50,16 +50,16 @@
 
     <dl class="mt-12 grid grid-cols-1 gap-5 border-t border-clay-border/80 pt-8 sm:grid-cols-3">
       <div class="surface-card p-5">
-        <dt class="font-display text-base font-semibold text-cobalt">Gặp gỡ nghệ nhân</dt>
-        <dd class="mt-1.5 text-sm leading-relaxed text-ink-muted">Hồ sơ xưởng đã được Ban Quản lý xác minh nguồn gốc làng nghề.</dd>
+        <dt class="font-display text-base font-semibold text-cobalt">{{ t("home.pillars.artisans_title") }}</dt>
+        <dd class="mt-1.5 text-sm leading-relaxed text-ink-muted">{{ t("home.pillars.artisans_body") }}</dd>
       </div>
       <div class="surface-card p-5">
-        <dt class="font-display text-base font-semibold text-cobalt">Truy xuất lô gốm QR</dt>
-        <dd class="mt-1.5 text-sm leading-relaxed text-ink-muted">Minh bạch hành trình từ ngày nhào đất, tạo dáng, vẽ men đến lúc ra lò.</dd>
+        <dt class="font-display text-base font-semibold text-cobalt">{{ t("home.pillars.qr_title") }}</dt>
+        <dd class="mt-1.5 text-sm leading-relaxed text-ink-muted">{{ t("home.pillars.qr_body") }}</dd>
       </div>
       <div class="surface-card p-5">
-        <dt class="font-display text-base font-semibold text-cobalt">Điều phối đơn sỉ nhiều xưởng</dt>
-        <dd class="mt-1.5 text-sm leading-relaxed text-ink-muted">So sánh chào giá và kết hợp năng lực nhiều hộ gia đình cho đơn hàng lớn.</dd>
+        <dt class="font-display text-base font-semibold text-cobalt">{{ t("home.pillars.rfq_title") }}</dt>
+        <dd class="mt-1.5 text-sm leading-relaxed text-ink-muted">{{ t("home.pillars.rfq_body") }}</dd>
       </div>
     </dl>
   </div>
