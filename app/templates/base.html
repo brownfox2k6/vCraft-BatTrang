@@ -14,7 +14,7 @@
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6 lg:px-8">
       {% include "partials/brand_mark.html" %}
 
-      <nav class="hidden lg:flex items-center gap-8" aria-label="{{ t('nav.primary_aria') }}">
+      <nav class="hidden xl:flex items-center gap-8" aria-label="{{ t('nav.primary_aria') }}">
         {% for item in primary_nav %}
           <a
             href="{{ item.href }}"
@@ -26,14 +26,14 @@
         {% endfor %}
       </nav>
 
-      <div class="hidden lg:flex items-center gap-3">
+      <div class="hidden xl:flex items-center gap-3">
         {% include "partials/lang_switcher.html" %}
         {% include "partials/theme_toggle.html" %}
         <a href="/dang-nhap" class="btn-secondary">{{ t("nav.login") }}</a>
         <a href="/yeu-cau-bao-gia/tao" class="btn-primary">{{ t("nav.rfq_cta") }}</a>
       </div>
 
-      <div class="flex lg:hidden items-center gap-2">
+      <div class="flex xl:hidden items-center gap-2">
         {% include "partials/lang_switcher.html" %}
         {% include "partials/theme_toggle.html" %}
         <button
@@ -53,7 +53,7 @@
       id="mobile-nav"
       data-drawer="mobile-nav"
       hidden
-      class="lg:hidden border-t border-clay-border bg-cream px-4 pb-5 pt-3 shadow-lg"
+      class="xl:hidden border-t border-clay-border bg-cream px-4 pb-5 pt-3 shadow-lg"
     >
       <nav class="flex flex-col gap-1" aria-label="{{ t('nav.mobile_aria') }}">
         {% for item in primary_nav %}

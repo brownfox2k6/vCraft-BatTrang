@@ -71,6 +71,13 @@
   h5,
   h6 {
     font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  p,
+  dd,
+  li {
+    text-wrap: pretty;
   }
 }
 
@@ -216,7 +223,7 @@
   }
 
   .nav-link {
-    @apply relative py-1 text-sm font-medium text-ink transition-colors hover:text-cobalt;
+    @apply relative shrink-0 whitespace-nowrap py-1 text-sm font-medium text-ink transition-colors hover:text-cobalt;
   }
 
   .nav-link-active {
@@ -224,11 +231,11 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center gap-2 rounded-lg bg-cobalt-action px-5 py-2.5 text-sm font-semibold text-on-cobalt shadow-xs transition-colors hover:bg-cobalt-action-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt;
+    @apply inline-flex shrink-0 whitespace-nowrap items-center gap-2 rounded-lg bg-cobalt-action px-5 py-2.5 text-sm font-semibold text-on-cobalt shadow-xs transition-colors hover:bg-cobalt-action-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center gap-2 rounded-lg border border-clay-border bg-surface/90 px-5 py-2.5 text-sm font-semibold text-cobalt transition-colors hover:border-cobalt/40 hover:bg-cream-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt;
+    @apply inline-flex shrink-0 whitespace-nowrap items-center gap-2 rounded-lg border border-clay-border bg-surface/90 px-5 py-2.5 text-sm font-semibold text-cobalt transition-colors hover:border-cobalt/40 hover:bg-cream-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt;
   }
 
   .icon-btn {
