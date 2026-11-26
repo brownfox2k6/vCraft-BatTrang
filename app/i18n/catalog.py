@@ -41,11 +41,21 @@ _PLACEHOLDER_RE = re.compile(r"(\{[^{}]+\})")
 _SEPARATORS: frozenset[str] = frozenset({"·", "-", "–", "—", "/"})
 
 
-def _bind_phrases(segment: str, phrases: tuple[str, ...]) -> str:
-    for phrase in phrases:
-        if phrase in segment:
-            segment = segment.replace(phrase, phrase.replace(" ", "\u00a0"))
-    return segment
+def _compile_phrase_pattern(phrases: tuple[str, ...]) -> re.Pattern[str]:
+    ordered = sorted(phrases, key=len, reverse=True)
+    alternatives = "|".join(re.escape(phrase) for phrase in ordered)
+    return re.compile(rf"(?<!\w)(?:{alternatives})(?!\w)")
+
+
+_NON_BREAKING_PATTERNS: dict[Lang, re.Pattern[str]] = {
+    lang: _compile_phrase_pattern(phrases) for lang, phrases in _NON_BREAKING_PHRASES.items()
+}
+
+
+def _bind_phrases(segment: str, pattern: re.Pattern[str] | None) -> str:
+    if pattern is None:
+        return segment
+    return pattern.sub(lambda match: match.group(0).replace(" ", "\u00a0"), segment)
 
 
 def _prevent_widow(line: str) -> str:
@@ -56,21 +66,19 @@ def _prevent_widow(line: str) -> str:
     prev = tokens[-2]
     if "\u00a0" in last or prev in _SEPARATORS:
         return line
-    if (last.startswith("{") and last.endswith("}")) or (
-        prev.startswith("{") and prev.endswith("}")
-    ):
+    if any(brace in token for token in (prev, last) for brace in ("{", "}")):
         return line
     return " ".join([*tokens[:-2], f"{prev}\u00a0{last}"])
 
 
 def _apply_typography(text: str, lang: Lang) -> str:
     """Bind proper-noun phrases and prevent orphan trailing words without mutating placeholders."""
-    phrases = _NON_BREAKING_PHRASES.get(lang, ())
+    pattern = _NON_BREAKING_PATTERNS.get(lang)
     processed_lines: list[str] = []
     for line in text.split("\n"):
         parts = _PLACEHOLDER_RE.split(line)
         bound = "".join(
-            part if _PLACEHOLDER_RE.fullmatch(part) else _bind_phrases(part, phrases)
+            part if _PLACEHOLDER_RE.fullmatch(part) else _bind_phrases(part, pattern)
             for part in parts
         )
         processed_lines.append(_prevent_widow(bound))

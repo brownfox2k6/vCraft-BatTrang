@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 
 from app.core.templating import create_templates
 from app.i18n import LANG_COOKIE_NAME
-from app.i18n.catalog import LOCALES_DIR, load_catalog, translate
+from app.i18n.catalog import LOCALES_DIR, _apply_typography, load_catalog, translate
 from app.i18n.fallback import localized_field, pick_localized
 from app.i18n.formatting import format_currency, format_date, format_datetime
 
@@ -318,3 +318,14 @@ def test_catalog_typography_keeps_locale_json_clean_and_binds_proper_nouns_and_w
             "theme.toggle_title",
         ):
             assert "\u00a0" not in translate(plain_key, lang)
+
+
+def test_typography_respects_word_boundaries_and_preserves_placeholders() -> None:
+    assert _apply_typography("Xưởng Bát Tràng tại {Bát Tràng}", "vi") == (
+        "Xưởng Bát\u00a0Tràng tại {Bát Tràng}"
+    )
+    assert _apply_typography("xBát Tràngy", "vi") == "xBát Tràngy"
+    assert _apply_typography("Management Boards", "en") == "Management Boards"
+    assert _apply_typography("The Management Board meets {place}.", "en") == (
+        "The Management\u00a0Board meets {place}."
+    )
