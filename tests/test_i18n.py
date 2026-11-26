@@ -111,7 +111,7 @@ def test_homepage_defaults_to_vi_and_switches_to_en_via_lang_cookie(client: Test
     assert initial.status_code == 200
     assert '<html lang="vi"' in initial.text
     assert "Khám phá" in initial.text
-    assert "Bát Tràng, chuyện đất hóa tinh hoa" in initial.text
+    assert "Bát\u00a0Tràng,\nchuyện\u00a0đất hóa\u00a0tinh\u00a0hoa" in initial.text
     assert 'action="/lang"' in initial.text
 
     switch_response = client.post(
@@ -131,8 +131,8 @@ def test_homepage_defaults_to_vi_and_switches_to_en_via_lang_cookie(client: Test
     assert '<html lang="en"' in english_home.text
     assert "Explore" in english_home.text
     assert "Request a Quote" in english_home.text
-    assert "Bát Tràng, where clay becomes craft" in english_home.text
-    assert "Meet the Artisans" in english_home.text
+    assert "Bát\u00a0Tràng,\nwhere\u00a0clay becomes\u00a0craft" in english_home.text
+    assert "Meet the\u00a0Artisans" in english_home.text
 
     back_to_vi = client.post("/lang", data={"lang": "vi", "next": "/"}, follow_redirects=False)
     assert back_to_vi.status_code == 303
