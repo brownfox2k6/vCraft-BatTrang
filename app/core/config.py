@@ -18,5 +18,8 @@ class Settings(BaseSettings):
     session_cookie_name: str = "vcraft_session"
     session_ttl_seconds: int = 60 * 60 * 24 * 7
     session_cookie_secure: bool = False
+    csrf_cookie_name: str = "vcraft_csrf"
+    csrf_header_name: str = "X-CSRF-Token"
+    csrf_form_field: str = "_csrf_token"
     login_rate_limit_max_attempts: int = 5
     login_rate_limit_window_seconds: int = 60 * 15

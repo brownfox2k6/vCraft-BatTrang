@@ -1,4 +1,4 @@
-"""Password hashing (Argon2id), password strength checks, and session token helpers."""
+"""Password hashing (Argon2id), password strength checks, and session/CSRF token helpers."""
 
 import hashlib
 import secrets
@@ -40,6 +40,18 @@ class Argon2PasswordHasher:
 def generate_session_token() -> str:
     """Generate a high-entropy opaque session token for HTTP cookie transport."""
     return secrets.token_urlsafe(32)
+
+
+def generate_csrf_token() -> str:
+    """Generate a high-entropy opaque CSRF token bound to a session or anonymous visitor."""
+    return secrets.token_urlsafe(32)
+
+
+def verify_csrf_token(expected: str | None, provided: str | None) -> bool:
+    """Compare expected and provided CSRF tokens in constant time."""
+    if not expected or not provided:
+        return False
+    return secrets.compare_digest(expected, provided)
 
 
 def hash_session_token(raw_token: str) -> str:

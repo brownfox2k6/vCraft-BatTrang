@@ -2,6 +2,8 @@
  * Client-side validation and fetch JSON submission for /dang-nhap and /dang-ky.
  */
 
+import { ApiClientError, apiFetch } from "./api.js";
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function setFormAlert(alertEl, message) {
@@ -129,31 +131,21 @@ function bindAuthForm(form) {
     }
 
     try {
-      const response = await fetch(endpoint, {
+      const result = await apiFetch(endpoint, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(payload),
+        body: payload,
       });
-      const json = await response.json();
-
-      if (!response.ok || json.error) {
-        const fieldErrors = (json.meta && json.meta.field_errors) || {};
-        Object.entries(fieldErrors).forEach(([field, msg]) => {
+      const target = (result.data && result.data.redirect_to) || "/";
+      window.location.assign(target);
+    } catch (error) {
+      if (error instanceof ApiClientError) {
+        Object.entries(error.fieldErrors).forEach(([field, msg]) => {
           setFieldError(form, field, String(msg));
         });
-        const message = (json.error && json.error.message) || form.dataset.msgGeneric || "";
-        setFormAlert(alertEl, message);
-        return;
+        setFormAlert(alertEl, error.message || form.dataset.msgGeneric || "");
+      } else {
+        setFormAlert(alertEl, form.dataset.msgGeneric || "");
       }
-
-      const target = (json.data && json.data.redirect_to) || "/";
-      window.location.assign(target);
-    } catch {
-      setFormAlert(alertEl, form.dataset.msgGeneric || "");
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;

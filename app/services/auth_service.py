@@ -1,4 +1,4 @@
-"""Authentication service orchestrating Buyer registration and server-side sessions."""
+"""Authentication service orchestrating Buyer registration, sessions, and audit events."""
 
 import math
 import uuid
@@ -13,6 +13,7 @@ from app.core.config import Settings
 from app.core.redirects import resolve_safe_next
 from app.core.security import (
     Argon2PasswordHasher,
+    generate_csrf_token,
     generate_session_token,
     hash_session_token,
     validate_password_strength,
@@ -22,6 +23,7 @@ from app.repositories.auth_repository import (
     AuthRepository,
     DuplicateEmailRepositoryError,
 )
+from app.services.audit_service import AuditAction, AuditService
 
 FULL_NAME_MIN_LENGTH = 2
 FULL_NAME_MAX_LENGTH = 120
@@ -63,10 +65,20 @@ class LogoutResult(BaseModel):
 
 @dataclass(frozen=True)
 class SessionIssueResult:
-    """Authenticated result paired with the opaque cookie token to set on the client."""
+    """Authenticated result paired with the opaque session cookie and bound CSRF token."""
 
     result: AuthResult
     raw_token: str
+    csrf_token: str
+
+
+@dataclass(frozen=True)
+class SessionContext:
+    """Active server-side session context attached to incoming HTTP requests."""
+
+    session_id: uuid.UUID
+    user: AuthenticatedUser
+    csrf_token: str
 
 
 class AuthError(Exception):
@@ -188,11 +200,38 @@ class AuthService:
         password_hasher: Argon2PasswordHasher,
         settings: Settings,
         clock: Callable[[], datetime] = default_utc_clock,
+        audit_service: AuditService | None = None,
     ) -> None:
         self._repository = repository
         self._password_hasher = password_hasher
         self._settings = settings
         self._clock = clock
+        self._audit = audit_service
+
+    def _record_audit(
+        self,
+        *,
+        action: AuditAction,
+        actor_user_id: uuid.UUID | None = None,
+        actor_email: str | None = None,
+        target_type: str | None = None,
+        target_id: str | None = None,
+        ip_address: str | None = None,
+        user_agent: str | None = None,
+        details: dict[str, object] | None = None,
+    ) -> None:
+        if self._audit is not None:
+            self._audit.record(
+                action=action.value,
+                actor_user_id=actor_user_id,
+                actor_email=actor_email,
+                target_type=target_type,
+                target_id=target_id,
+                ip_address=ip_address,
+                user_agent=user_agent,
+                details=details,
+                commit=False,
+            )
 
     def register_buyer(
         self,
@@ -243,6 +282,7 @@ class AuthService:
             next_url=next_url,
             ip_address=ip_address,
             user_agent=user_agent,
+            audit_action=AuditAction.AUTH_REGISTER,
         )
 
     def login(
@@ -282,6 +322,14 @@ class AuthService:
                     (oldest + timedelta(seconds=window_seconds) - now).total_seconds()
                 )
                 retry_after = max(1, remaining)
+            self._record_audit(
+                action=AuditAction.AUTH_LOGIN_FAILED,
+                actor_email=normalized_email,
+                target_type="auth",
+                ip_address=ip_address,
+                user_agent=user_agent,
+                details={"reason": "rate_limited"},
+            )
             self._repository.commit()
             raise RateLimitExceededAuthError(retry_after_seconds=retry_after)
 
@@ -289,15 +337,43 @@ class AuthService:
         if user is None:
             self._password_hasher.verify_dummy(password)
             self._repository.record_failed_attempt(scope_key, now)
+            self._record_audit(
+                action=AuditAction.AUTH_LOGIN_FAILED,
+                actor_email=normalized_email,
+                target_type="auth",
+                ip_address=ip_address,
+                user_agent=user_agent,
+                details={"reason": "unknown_email"},
+            )
             self._repository.commit()
             raise InvalidCredentialsAuthError
 
         if not self._password_hasher.verify(user.password_hash, password):
             self._repository.record_failed_attempt(scope_key, now)
+            self._record_audit(
+                action=AuditAction.AUTH_LOGIN_FAILED,
+                actor_user_id=user.id,
+                actor_email=user.email,
+                target_type="user",
+                target_id=str(user.id),
+                ip_address=ip_address,
+                user_agent=user_agent,
+                details={"reason": "invalid_password"},
+            )
             self._repository.commit()
             raise InvalidCredentialsAuthError
 
         if not user.is_active:
+            self._record_audit(
+                action=AuditAction.AUTH_LOGIN_FAILED,
+                actor_user_id=user.id,
+                actor_email=user.email,
+                target_type="user",
+                target_id=str(user.id),
+                ip_address=ip_address,
+                user_agent=user_agent,
+                details={"reason": "account_inactive"},
+            )
             self._repository.commit()
             raise AccountInactiveAuthError
 
@@ -310,18 +386,36 @@ class AuthService:
             next_url=next_url,
             ip_address=ip_address,
             user_agent=user_agent,
+            audit_action=AuditAction.AUTH_LOGIN_SUCCESS,
         )
 
-    def logout(self, raw_token: str | None) -> LogoutResult:
-        """Delete the server-side session matching the cookie token if present."""
+    def logout(
+        self,
+        raw_token: str | None,
+        *,
+        ip_address: str | None = None,
+        user_agent: str | None = None,
+    ) -> LogoutResult:
+        """Delete the server-side session matching the cookie token and record audit log."""
         if raw_token and raw_token.strip():
             token_hash = hash_session_token(raw_token.strip())
-            self._repository.delete_session_by_token_hash(token_hash)
-            self._repository.commit()
+            existing = self._repository.get_session_by_token_hash(token_hash)
+            if existing is not None:
+                self._record_audit(
+                    action=AuditAction.AUTH_LOGOUT,
+                    actor_user_id=existing.user.id,
+                    actor_email=existing.user.email,
+                    target_type="session",
+                    target_id=str(existing.id),
+                    ip_address=ip_address,
+                    user_agent=user_agent,
+                )
+                self._repository.delete_session(existing)
+                self._repository.commit()
         return LogoutResult(logged_out=True)
 
-    def resolve_session(self, raw_token: str | None) -> AuthenticatedUser | None:
-        """Resolve an active, unexpired session cookie to an authenticated user."""
+    def resolve_session_context(self, raw_token: str | None) -> SessionContext | None:
+        """Resolve an active, unexpired session cookie to its user and bound CSRF token."""
         if not raw_token or not raw_token.strip():
             return None
 
@@ -340,7 +434,16 @@ class AuthService:
             self._repository.commit()
             return None
 
-        return _to_authenticated_user(user_session.user)
+        return SessionContext(
+            session_id=user_session.id,
+            user=_to_authenticated_user(user_session.user),
+            csrf_token=user_session.csrf_token,
+        )
+
+    def resolve_session(self, raw_token: str | None) -> AuthenticatedUser | None:
+        """Resolve an active, unexpired session cookie to an authenticated user."""
+        context = self.resolve_session_context(raw_token)
+        return context.user if context is not None else None
 
     def _issue_session_for_user(
         self,
@@ -349,17 +452,30 @@ class AuthService:
         next_url: str | None,
         ip_address: str | None,
         user_agent: str | None,
+        audit_action: AuditAction,
     ) -> SessionIssueResult:
         raw_token = generate_session_token()
+        csrf_token = generate_csrf_token()
         token_hash = hash_session_token(raw_token)
         expires_at = self._clock() + timedelta(seconds=self._settings.session_ttl_seconds)
 
-        self._repository.create_session(
+        session_row = self._repository.create_session(
             user_id=user.id,
             token_hash=token_hash,
+            csrf_token=csrf_token,
             expires_at=expires_at,
             ip_address=ip_address,
             user_agent=user_agent,
+        )
+        self._record_audit(
+            action=audit_action,
+            actor_user_id=user.id,
+            actor_email=user.email,
+            target_type="user" if audit_action == AuditAction.AUTH_REGISTER else "session",
+            target_id=str(user.id if audit_action == AuditAction.AUTH_REGISTER else session_row.id),
+            ip_address=ip_address,
+            user_agent=user_agent,
+            details={"role": user.role},
         )
         self._repository.commit()
 
@@ -371,4 +487,5 @@ class AuthService:
                 redirect_to=redirect_to,
             ),
             raw_token=raw_token,
+            csrf_token=csrf_token,
         )

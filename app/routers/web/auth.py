@@ -10,9 +10,11 @@ from app.core.config import Settings
 from app.core.redirects import resolve_safe_next
 from app.i18n.catalog import translate
 from app.routers.auth_cookies import (
+    clear_csrf_cookie,
     clear_session_cookie,
     get_client_ip,
     is_secure_request,
+    set_csrf_cookie,
     set_session_cookie,
 )
 from app.routers.dependencies import (
@@ -149,12 +151,9 @@ def login_submit(
         )
 
     response = RedirectResponse(url=issued.result.redirect_to, status_code=303)
-    set_session_cookie(
-        response,
-        issued.raw_token,
-        settings,
-        secure=is_secure_request(request, settings),
-    )
+    secure = is_secure_request(request, settings)
+    set_session_cookie(response, issued.raw_token, settings, secure=secure)
+    set_csrf_cookie(response, issued.csrf_token, settings, secure=secure)
     return response
 
 
@@ -229,12 +228,9 @@ def register_submit(
         )
 
     response = RedirectResponse(url=issued.result.redirect_to, status_code=303)
-    set_session_cookie(
-        response,
-        issued.raw_token,
-        settings,
-        secure=is_secure_request(request, settings),
-    )
+    secure = is_secure_request(request, settings)
+    set_session_cookie(response, issued.raw_token, settings, secure=secure)
+    set_csrf_cookie(response, issued.csrf_token, settings, secure=secure)
     return response
 
 
@@ -247,11 +243,13 @@ def logout_submit(
 ) -> RedirectResponse:
     """Revoke server-side session, clear browser cookie, and redirect safely."""
     raw_token = request.cookies.get(settings.session_cookie_name)
-    service.logout(raw_token)
-    response = RedirectResponse(url=resolve_safe_next(next, default="/"), status_code=303)
-    clear_session_cookie(
-        response,
-        settings,
-        secure=is_secure_request(request, settings),
+    service.logout(
+        raw_token,
+        ip_address=get_client_ip(request),
+        user_agent=request.headers.get("user-agent"),
     )
+    response = RedirectResponse(url=resolve_safe_next(next, default="/"), status_code=303)
+    secure = is_secure_request(request, settings)
+    clear_session_cookie(response, settings, secure=secure)
+    clear_csrf_cookie(response, settings, secure=secure)
     return response

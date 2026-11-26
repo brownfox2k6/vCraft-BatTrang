@@ -34,6 +34,7 @@
             {{ current_user.full_name }}
           </span>
           <form action="/dang-xuat" method="post" data-logout-form class="shrink-0">
+            {{ csrf_input() }}
             <button type="submit" class="btn-secondary">{{ t("nav.logout") }}</button>
           </form>
         {% else %}
@@ -79,6 +80,7 @@
         {% if current_user %}
           <p class="px-1 text-sm font-semibold text-cobalt sm:mr-auto">{{ current_user.full_name }}</p>
           <form action="/dang-xuat" method="post" data-logout-form class="w-full sm:w-auto">
+            {{ csrf_input() }}
             <button type="submit" class="btn-secondary w-full justify-center">{{ t("nav.logout") }}</button>
           </form>
         {% else %}

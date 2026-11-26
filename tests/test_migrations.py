@@ -31,6 +31,15 @@ def _table_names(database_url: str) -> set[str]:
         engine.dispose()
 
 
+def _column_names(database_url: str, table_name: str) -> set[str]:
+    engine = create_engine(database_url)
+    try:
+        with engine.connect() as connection:
+            return {column["name"] for column in inspect(connection).get_columns(table_name)}
+    finally:
+        engine.dispose()
+
+
 def test_alembic_upgrade_downgrade_upgrade_cycle(
     test_database_url: str,
     monkeypatch: pytest.MonkeyPatch,
@@ -40,14 +49,18 @@ def test_alembic_upgrade_downgrade_upgrade_cycle(
     expected_head = ScriptDirectory.from_config(alembic_cfg).get_current_head()
     assert expected_head is not None
 
+    expected_tables = {"users", "user_sessions", "login_attempts", "audit_logs"}
+
     command.upgrade(alembic_cfg, "head")
     assert _current_db_revision(test_database_url) == expected_head
-    assert {"users", "user_sessions", "login_attempts"}.issubset(_table_names(test_database_url))
+    assert expected_tables.issubset(_table_names(test_database_url))
+    assert "csrf_token" in _column_names(test_database_url, "user_sessions")
 
     command.downgrade(alembic_cfg, "base")
     assert _current_db_revision(test_database_url) is None
-    assert _table_names(test_database_url).isdisjoint({"users", "user_sessions", "login_attempts"})
+    assert _table_names(test_database_url).isdisjoint(expected_tables)
 
     command.upgrade(alembic_cfg, "head")
     assert _current_db_revision(test_database_url) == expected_head
-    assert {"users", "user_sessions", "login_attempts"}.issubset(_table_names(test_database_url))
+    assert expected_tables.issubset(_table_names(test_database_url))
+    assert "csrf_token" in _column_names(test_database_url, "user_sessions")

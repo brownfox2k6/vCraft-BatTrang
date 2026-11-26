@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="bg-gradient-to-br from-cream via-cream to-cream-deep/80 py-14 sm:py-20">
+  <div class="mx-auto max-w-md px-4 sm:px-6">
+    <div class="surface-card space-y-5 p-6 text-center sm:p-8">
+      <p class="eyebrow">{{ t("errors.403.eyebrow") }}</p>
+      <h1 class="font-display text-2xl font-bold text-cobalt">{{ t("errors.403.heading") }}</h1>
+      <p class="text-sm leading-relaxed text-ink-muted">{{ error_message or t("auth.errors.forbidden") }}</p>
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <a href="/" class="btn-primary">{{ t("errors.403.back_home") }}</a>
+        {% if not current_user %}
+          <a href="/dang-nhap" class="btn-secondary">{{ t("errors.403.sign_in") }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

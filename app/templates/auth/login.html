@@ -28,6 +28,7 @@
         data-msg-generic="{{ t('auth.errors.generic') }}"
         class="mt-6 space-y-5"
       >
+        {{ csrf_input() }}
         {% if next_url %}
           <input type="hidden" name="next" value="{{ next_url }}">
         {% endif %}

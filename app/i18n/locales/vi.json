@@ -109,7 +109,34 @@
       "account_inactive": "Tài khoản này đang bị tạm khóa.",
       "rate_limited": "Bạn đã thử đăng nhập sai quá nhiều lần. Vui lòng thử lại sau {minutes} phút.",
       "unauthenticated": "Bạn chưa đăng nhập hoặc phiên đã hết hạn.",
+      "forbidden": "Bạn không có quyền truy cập tài nguyên này.",
+      "csrf_invalid": "Mã xác thực bảo mật CSRF không hợp lệ hoặc đã hết hạn. Vui lòng tải lại trang.",
       "generic": "Không thể xử lý yêu cầu lúc này. Vui lòng thử lại."
+    }
+  },
+  "errors": {
+    "403": {
+      "page_title": "Không có quyền truy cập",
+      "eyebrow": "403 · Truy cập bị từ chối",
+      "heading": "Bạn không có quyền thực hiện thao tác này",
+      "back_home": "Về trang chủ",
+      "sign_in": "Đăng nhập"
+    }
+  },
+  "portals": {
+    "artisan": {
+      "page_title": "Không gian Nghệ nhân",
+      "role_label": "Nghệ nhân",
+      "nav_overview": "Tổng quan xưởng",
+      "heading": "Không gian làm việc Nghệ nhân",
+      "lead": "Quản lý hồ sơ xưởng gốm, danh mục tác phẩm, nhật ký lô gốm QR và báo giá khách hàng."
+    },
+    "admin": {
+      "page_title": "Quản trị Ban Quản lý",
+      "role_label": "Ban Quản lý",
+      "nav_overview": "Tổng quan làng nghề",
+      "heading": "Không gian Ban Quản lý Làng gốm Bát Tràng",
+      "lead": "Xác minh xưởng nghệ nhân, điều phối đơn báo giá nhiều xưởng và theo dõi nhật ký kiểm toán hệ thống."
     }
   }
 }

@@ -45,8 +45,43 @@ def clear_session_cookie(
     )
 
 
+def set_csrf_cookie(
+    response: Response,
+    token: str,
+    settings: Settings,
+    *,
+    secure: bool,
+) -> None:
+    """Attach the non-HttpOnly SameSite=Lax CSRF cookie synchronized with the active token."""
+    response.set_cookie(
+        key=settings.csrf_cookie_name,
+        value=token,
+        max_age=settings.session_ttl_seconds,
+        path="/",
+        httponly=False,
+        samesite="lax",
+        secure=secure,
+    )
+
+
+def clear_csrf_cookie(
+    response: Response,
+    settings: Settings,
+    *,
+    secure: bool,
+) -> None:
+    """Clear the CSRF cookie in the browser."""
+    response.delete_cookie(
+        key=settings.csrf_cookie_name,
+        path="/",
+        httponly=False,
+        samesite="lax",
+        secure=secure,
+    )
+
+
 def get_client_ip(request: Request) -> str:
-    """Resolve the direct caller IP address for rate limiting and session metadata."""
+    """Resolve the direct caller IP address for rate limiting, session, and audit metadata."""
     if request.client is not None and request.client.host:
         return request.client.host[:45]
     return "unknown"

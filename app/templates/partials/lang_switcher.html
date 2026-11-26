@@ -8,6 +8,7 @@
   class="inline-flex h-10 shrink-0 items-center gap-1 rounded-lg border border-clay-border bg-surface/90 px-1 text-xs font-semibold"
   aria-label="{{ t('lang.switcher_aria') }}"
 >
+  {{ csrf_input() }}
   <input type="hidden" name="next" value="{{ current_url }}">
   {% for code, label, aria_label in lang_options %}
     {% if not loop.first %}
