@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from decimal import Decimal
+from html.parser import HTMLParser
 
 import pytest
 from fastapi.testclient import TestClient
@@ -209,3 +210,81 @@ def test_workspace_layout_and_jinja_helpers_render_in_selected_language() -> Non
     assert "48,000 VND" in html_en
     assert "Nov 26, 2026" in html_en
     assert "Nov 26, 2026, 08:30" in html_en
+
+
+class _LangButtonParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.buttons: list[dict[str, str | None]] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag == "button":
+            attr_map = dict(attrs)
+            aria_label = attr_map.get("aria-label") or ""
+            if "aria-pressed" in attr_map and aria_label.startswith(("Chuyển", "Switch")):
+                self.buttons.append(attr_map)
+
+
+def _parse_lang_buttons(html: str) -> list[dict[str, str | None]]:
+    parser = _LangButtonParser()
+    parser.feed(html)
+    return parser.buttons
+
+
+@pytest.mark.parametrize(
+    ("cookie_lang", "inactive_lang"),
+    [
+        (None, "en"),
+        ("en", "vi"),
+    ],
+)
+def test_active_language_button_is_noop_and_switcher_uses_surface_token(
+    client: TestClient,
+    cookie_lang: str | None,
+    inactive_lang: str,
+) -> None:
+    active_lang = "en" if cookie_lang == "en" else "vi"
+    if cookie_lang is not None:
+        client.cookies.set(LANG_COOKIE_NAME, cookie_lang)
+
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "bg-surface/90" in response.text
+
+    buttons = _parse_lang_buttons(response.text)
+    assert len(buttons) >= 2
+    assert any(
+        b.get("type") == "button"
+        and b.get("aria-pressed") == "true"
+        and "name" not in b
+        and "value" not in b
+        for b in buttons
+    )
+    assert any(
+        b.get("type") == "submit"
+        and b.get("aria-pressed") == "false"
+        and b.get("name") == "lang"
+        and b.get("value") == inactive_lang
+        for b in buttons
+    )
+    assert not any(b.get("name") == "lang" and b.get("value") == active_lang for b in buttons)
+
+
+def test_html_responses_include_vary_cookie_and_css_includes_view_transition(
+    client: TestClient,
+) -> None:
+    html_response = client.get("/")
+    assert html_response.status_code == 200
+    vary_values = [v.strip().lower() for v in html_response.headers.get("vary", "").split(",") if v]
+    assert "cookie" in vary_values
+    assert vary_values.count("cookie") == 1
+
+    css_response = client.get("/static/css/app.css")
+    assert css_response.status_code == 200
+    css = css_response.text.lower()
+    assert "@view-transition" in css
+    assert "navigation:auto" in css
+    assert "prefers-reduced-motion:no-preference" in css
+    assert "view-transition-old(root)" in css
+    assert "view-transition-new(root)" in css
+    assert ".18s" in css

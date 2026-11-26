@@ -5,7 +5,7 @@
 <form
   action="/lang"
   method="post"
-  class="inline-flex h-10 shrink-0 items-center gap-1 rounded-lg border border-clay-border bg-cream px-1 text-xs font-semibold"
+  class="inline-flex h-10 shrink-0 items-center gap-1 rounded-lg border border-clay-border bg-surface/90 px-1 text-xs font-semibold"
   aria-label="{{ t('lang.switcher_aria') }}"
 >
   <input type="hidden" name="next" value="{{ current_url }}">
@@ -13,13 +13,13 @@
     {% if not loop.first %}
       <span class="text-clay-border" aria-hidden="true">|</span>
     {% endif %}
+    {% set is_active = lang == code %}
     <button
-      type="submit"
-      name="lang"
-      value="{{ code }}"
-      class="rounded-lg px-3 py-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt {% if lang == code %}bg-cobalt-action text-on-cobalt{% else %}text-ink-muted hover:bg-cream-deep hover:text-cobalt{% endif %}"
+      type="{{ 'button' if is_active else 'submit' }}"
+      {% if not is_active %}name="lang" value="{{ code }}"{% endif %}
+      class="rounded-lg px-3 py-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cobalt {% if is_active %}cursor-default bg-cobalt-action text-on-cobalt{% else %}cursor-pointer text-ink-muted hover:bg-cream-deep hover:text-cobalt{% endif %}"
       aria-label="{{ aria_label }}"
-      aria-pressed="{{ 'true' if lang == code else 'false' }}"
+      aria-pressed="{{ 'true' if is_active else 'false' }}"
     >{{ label }}</button>
   {% endfor %}
 </form>

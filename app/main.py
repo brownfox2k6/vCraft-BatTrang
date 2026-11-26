@@ -43,7 +43,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         call_next: Callable[[Request], Awaitable[Response]],
     ) -> Response:
         request.state.lang = normalize_lang(request.cookies.get(LANG_COOKIE_NAME))
-        return await call_next(request)
+        response = await call_next(request)
+        if response.headers.get("content-type", "").lower().startswith("text/html"):
+            existing_vary = (response.headers.get("vary") or "").strip()
+            if not existing_vary:
+                response.headers["Vary"] = "Cookie"
+            elif "cookie" not in {part.strip().lower() for part in existing_vary.split(",")}:
+                response.headers["Vary"] = f"{existing_vary}, Cookie"
+        return response
 
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
     app.include_router(health_router)
