@@ -155,6 +155,10 @@ def test_frontend_api_js_module_is_served_and_wired_into_auth_js(client: TestCli
     assert auth_js.status_code == 200
     assert "./api.js" in auth_js.text
 
+    layout_js = client.get("/static/js/layout.js")
+    assert layout_js.status_code == 200
+    assert "./api.js" in layout_js.text
+
 
 def test_rbac_blocks_unauthenticated_and_cross_role_access_across_three_roles(
     make_client: ClientFactory,
