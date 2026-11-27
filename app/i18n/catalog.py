@@ -185,7 +185,7 @@ def load_catalog(lang: Lang) -> dict[str, str]:
             value
             if key in _PLAIN_TEXT_KEYS
             or key.endswith(("_aria", ".page_title"))
-            or key.startswith("auth.errors.")
+            or key.startswith(("auth.errors.", "media.errors."))
             else _apply_typography(value, lang)
         )
         for key, value in flattened.items()

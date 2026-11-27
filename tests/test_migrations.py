@@ -49,7 +49,7 @@ def test_alembic_upgrade_downgrade_upgrade_cycle(
     expected_head = ScriptDirectory.from_config(alembic_cfg).get_current_head()
     assert expected_head is not None
 
-    expected_tables = {"users", "user_sessions", "login_attempts", "audit_logs"}
+    expected_tables = {"users", "user_sessions", "login_attempts", "audit_logs", "media_assets"}
 
     command.upgrade(alembic_cfg, "head")
     assert _current_db_revision(test_database_url) == expected_head

@@ -14,8 +14,10 @@ from app.i18n import DEFAULT_LANG, Lang, normalize_lang
 from app.i18n.catalog import translate
 from app.repositories.audit_repository import AuditRepository
 from app.repositories.auth_repository import AuthRepository
+from app.repositories.media_repository import MediaRepository
 from app.services.audit_service import AuditService
 from app.services.auth_service import AuthError, AuthService, RateLimitExceededAuthError
+from app.services.media_service import MediaService
 
 
 def build_audit_service(
@@ -78,6 +80,14 @@ def get_audit_service(
     """Build AuditService wired with the request DB session and application clock."""
     clock: Callable[[], datetime] = request.app.state.clock
     return build_audit_service(db, clock=clock)
+
+
+def get_media_service(
+    db: Annotated[Session, Depends(get_db)],
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> MediaService:
+    """Build MediaService wired with the request DB session and runtime settings."""
+    return MediaService(repository=MediaRepository(db), settings=settings)
 
 
 def get_auth_service(

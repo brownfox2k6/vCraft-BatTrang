@@ -138,5 +138,24 @@
       "heading": "Bát Tràng Management Board Portal",
       "lead": "Verify artisan workshops, coordinate multi-workshop quote requests, and review system audit logs."
     }
+  },
+  "media": {
+    "uploader": {
+      "dropzone_prompt": "Drag and drop images here or choose from your device",
+      "dropzone_hint": "Supports JPEG, PNG, WebP. Up to {max_files} images, max {max_mb} MB each.",
+      "select_button": "Choose images",
+      "upload_button": "Upload images",
+      "uploading": "Optimizing and uploading images...",
+      "remove_aria": "Remove image from upload queue",
+      "uploaded_badge": "Uploaded"
+    },
+    "errors": {
+      "no_files": "Please select at least one image file to upload.",
+      "too_many_files": "You can upload at most {max_files} images per request.",
+      "too_large": "Each image must not exceed {max_mb} MB.",
+      "invalid_format": "Invalid file. Only genuine JPEG, PNG, or WebP images are accepted.",
+      "invalid_category": "Invalid media storage category.",
+      "upload_failed": "Unable to upload images right now. Please try again."
+    }
   }
 }

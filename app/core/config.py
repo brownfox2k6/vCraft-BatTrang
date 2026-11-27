@@ -21,5 +21,8 @@ class Settings(BaseSettings):
     csrf_cookie_name: str = "vcraft_csrf"
     csrf_header_name: str = "X-CSRF-Token"
     csrf_form_field: str = "_csrf_token"
+    media_root: str = "storage/media"
+    media_max_bytes: int = 10 * 1024 * 1024
+    media_max_files_per_request: int = 10
     login_rate_limit_max_attempts: int = 5
     login_rate_limit_window_seconds: int = 60 * 15
