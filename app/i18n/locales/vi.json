@@ -138,5 +138,24 @@
       "heading": "Không gian Ban Quản lý Làng gốm Bát Tràng",
       "lead": "Xác minh xưởng nghệ nhân, điều phối đơn báo giá nhiều xưởng và theo dõi nhật ký kiểm toán hệ thống."
     }
+  },
+  "media": {
+    "uploader": {
+      "dropzone_prompt": "Kéo thả ảnh vào đây hoặc chọn từ thiết bị",
+      "dropzone_hint": "Hỗ trợ JPEG, PNG, WebP. Tối đa {max_files} ảnh, mỗi ảnh không quá {max_mb} MB.",
+      "select_button": "Chọn ảnh",
+      "upload_button": "Tải ảnh lên",
+      "uploading": "Đang tối ưu và tải ảnh lên...",
+      "remove_aria": "Xóa ảnh khỏi danh sách tải lên",
+      "uploaded_badge": "Đã tải lên"
+    },
+    "errors": {
+      "no_files": "Vui lòng chọn ít nhất một tệp ảnh để tải lên.",
+      "too_many_files": "Chỉ được tải lên tối đa {max_files} ảnh mỗi lần.",
+      "too_large": "Mỗi ảnh không được vượt quá {max_mb} MB.",
+      "invalid_format": "Tệp không hợp lệ. Chỉ chấp nhận ảnh JPEG, PNG hoặc WebP thực.",
+      "invalid_category": "Danh mục lưu trữ ảnh không hợp lệ.",
+      "upload_failed": "Không thể tải ảnh lên lúc này. Vui lòng thử lại."
+    }
   }
 }

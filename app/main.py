@@ -21,12 +21,14 @@ from app.i18n.catalog import translate
 from app.routers.api.admin import router as admin_api_router
 from app.routers.api.auth import router as auth_api_router
 from app.routers.api.health import router as health_router
+from app.routers.api.media import router as media_api_router
 from app.routers.auth_cookies import is_secure_request, set_csrf_cookie
 from app.routers.dependencies import build_auth_service, get_request_lang
 from app.routers.guards import ApiGuardError, WebForbiddenError, WebRedirectError
 from app.routers.web.auth import router as auth_web_router
 from app.routers.web.home import router as home_router
 from app.routers.web.lang import router as lang_router
+from app.routers.web.media import router as media_web_router
 from app.routers.web.portals import router as portals_web_router
 from app.services.auth_service import default_utc_clock
 
@@ -176,7 +178,7 @@ def create_app(
         request.state.csrf_token = ""
 
         path = request.url.path
-        if path == "/api/health" or path.startswith("/static/"):
+        if path == "/api/health" or path.startswith(("/static/", "/media/")):
             return await call_next(request)
 
         session_csrf: str | None = None
@@ -241,8 +243,10 @@ def create_app(
     app.include_router(health_router)
     app.include_router(auth_api_router)
     app.include_router(admin_api_router)
+    app.include_router(media_api_router)
     app.include_router(lang_router)
     app.include_router(auth_web_router)
+    app.include_router(media_web_router)
     app.include_router(portals_web_router)
     app.include_router(home_router)
     return app

@@ -228,3 +228,6 @@ __marimo__/
 
 # Local build tool binaries (e.g. Tailwind Standalone CLI)
 .tools/
+
+# Local uploaded media storage
+storage/media/
