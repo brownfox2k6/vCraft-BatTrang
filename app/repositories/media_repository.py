@@ -1,7 +1,9 @@
-"""Repository for persisting uploaded MediaAsset records."""
+"""Repository for persisting and querying uploaded MediaAsset records."""
 
 import uuid
+from collections.abc import Sequence
 
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from app.models.media import MediaAsset, MediaCategory
@@ -45,6 +47,28 @@ class MediaRepository:
         self._session.add(asset)
         self._session.flush()
         return asset
+
+    def get_assets_by_ids(self, asset_ids: Sequence[uuid.UUID]) -> list[MediaAsset]:
+        """Fetch all MediaAsset rows matching the supplied UUIDs."""
+        if not asset_ids:
+            return []
+        stmt = select(MediaAsset).where(MediaAsset.id.in_(asset_ids))
+        return list(self._session.scalars(stmt).all())
+
+    def assign_owner(self, asset_ids: Sequence[uuid.UUID], owner_user_id: uuid.UUID) -> int:
+        """Attach an owner_user_id to unowned MediaAsset rows and return updated row count."""
+        if not asset_ids:
+            return 0
+        updated_ids = list(
+            self._session.scalars(
+                update(MediaAsset)
+                .where(MediaAsset.id.in_(asset_ids), MediaAsset.owner_user_id.is_(None))
+                .values(owner_user_id=owner_user_id)
+                .returning(MediaAsset.id)
+            ).all()
+        )
+        self._session.flush()
+        return len(updated_ids)
 
     def commit(self) -> None:
         """Commit the current database transaction."""

@@ -85,7 +85,7 @@ export class MediaUploader {
   addFiles(fileList) {
     this._setError("");
     const incoming = Array.from(fileList);
-    if (this.queue.length + incoming.length > this.maxFiles) {
+    if (this.uploadedAssets.length + this.queue.length + incoming.length > this.maxFiles) {
       this._setError(this.root.dataset.msgTooMany || "Too many files selected.");
       return;
     }
