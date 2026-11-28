@@ -81,6 +81,20 @@ def _make_csrf_input_helper(field_name: str) -> Any:
     return _jinja_csrf_input
 
 
+def _static_url(path: str) -> str:
+    """Append an mtime cache-buster query string for assets inside STATIC_DIR."""
+    prefix = "/static/"
+    if not path.startswith(prefix):
+        return path
+    candidate = (STATIC_DIR / path[len(prefix) :]).resolve()
+    try:
+        candidate.relative_to(STATIC_DIR.resolve())
+        version = candidate.stat().st_mtime_ns // 1_000_000_000
+    except (OSError, ValueError):
+        return path
+    return f"{path}?v={version}"
+
+
 def _i18n_context_processor(request: Request) -> dict[str, Any]:
     current_url = request.url.path or "/"
     if request.url.query:
@@ -106,6 +120,7 @@ def create_templates(*, csrf_form_field: str = "_csrf_token") -> Jinja2Templates
     templates.env.globals["t"] = _jinja_t
     templates.env.globals["localize"] = _jinja_localize
     templates.env.globals["csrf_input"] = _make_csrf_input_helper(csrf_form_field)
+    templates.env.globals["static_url"] = _static_url
     templates.env.filters["format_currency"] = _jinja_format_currency
     templates.env.filters["format_date"] = _jinja_format_date
     templates.env.filters["format_datetime"] = _jinja_format_datetime

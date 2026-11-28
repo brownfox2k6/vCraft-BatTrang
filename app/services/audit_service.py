@@ -19,6 +19,7 @@ class AuditAction(StrEnum):
     AUTH_LOGIN_SUCCESS = "auth.login_success"
     AUTH_LOGIN_FAILED = "auth.login_failed"
     AUTH_LOGOUT = "auth.logout"
+    WORKSHOP_APPLICATION_SUBMITTED = "workshop_application.submitted"
 
 
 class AuditLogEntry(BaseModel):

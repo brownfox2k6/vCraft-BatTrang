@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% macro required_mark() %}<span class="form-required" aria-hidden="true">*</span>{% endmacro %}
+
 {% block content %}
 <section class="bg-gradient-to-br from-cream via-cream to-cream-deep/80 py-12 sm:py-16">
   <div class="mx-auto max-w-md px-4 sm:px-6">
@@ -34,7 +36,7 @@
         {% endif %}
 
         <div>
-          <label for="login-email" class="form-label">{{ t("auth.login.email_label") }}</label>
+          <label for="login-email" class="form-label">{{ t("auth.login.email_label") }}{{ required_mark() }}</label>
           <input
             id="login-email"
             name="email"
@@ -56,7 +58,7 @@
         </div>
 
         <div>
-          <label for="login-password" class="form-label">{{ t("auth.login.password_label") }}</label>
+          <label for="login-password" class="form-label">{{ t("auth.login.password_label") }}{{ required_mark() }}</label>
           <input
             id="login-password"
             name="password"

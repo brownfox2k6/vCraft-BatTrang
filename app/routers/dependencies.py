@@ -15,9 +15,11 @@ from app.i18n.catalog import translate
 from app.repositories.audit_repository import AuditRepository
 from app.repositories.auth_repository import AuthRepository
 from app.repositories.media_repository import MediaRepository
+from app.repositories.workshop_application_repository import WorkshopApplicationRepository
 from app.services.audit_service import AuditService
 from app.services.auth_service import AuthError, AuthService, RateLimitExceededAuthError
 from app.services.media_service import MediaService
+from app.services.workshop_application_service import WorkshopApplicationService
 
 
 def build_audit_service(
@@ -88,6 +90,22 @@ def get_media_service(
 ) -> MediaService:
     """Build MediaService wired with the request DB session and runtime settings."""
     return MediaService(repository=MediaRepository(db), settings=settings)
+
+
+def get_workshop_application_service(
+    request: Request,
+    db: Annotated[Session, Depends(get_db)],
+) -> WorkshopApplicationService:
+    """Build WorkshopApplicationService wired with request DB session, hasher, and audit log."""
+    password_hasher: Argon2PasswordHasher = request.app.state.password_hasher
+    clock: Callable[[], datetime] = request.app.state.clock
+    return WorkshopApplicationService(
+        application_repository=WorkshopApplicationRepository(db),
+        auth_repository=AuthRepository(db),
+        media_repository=MediaRepository(db),
+        password_hasher=password_hasher,
+        audit_service=build_audit_service(db, clock=clock),
+    )
 
 
 def get_auth_service(

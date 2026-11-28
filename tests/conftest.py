@@ -18,6 +18,7 @@ from app.main import create_app
 from app.models.audit import AuditLog
 from app.models.auth import LoginAttempt, User, UserSession
 from app.models.media import MediaAsset
+from app.models.workshop import WorkshopApplication
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 _MUTATING_METHODS = frozenset({"POST", "PUT", "PATCH", "DELETE"})
@@ -126,6 +127,7 @@ def clean_auth_db(migrated_test_db: str) -> str:
     engine = create_engine(migrated_test_db)
     try:
         with engine.begin() as connection:
+            connection.execute(delete(WorkshopApplication))
             connection.execute(delete(MediaAsset))
             connection.execute(delete(AuditLog))
             connection.execute(delete(LoginAttempt))

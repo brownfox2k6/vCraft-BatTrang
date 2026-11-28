@@ -23,6 +23,8 @@ export class MediaUploader {
     this.statusEl = root.querySelector("[data-media-status]");
     this.errorEl = root.querySelector("[data-media-error]");
     this.hiddenIdsInput = root.querySelector("[data-media-ids]");
+    this.autoUpload = root.dataset.autoUpload === "true" || !this.uploadBtn;
+    this.isUploading = false;
 
     /** @type {Array<{id: string, file: File, objectUrl: string}>} */
     this.queue = [];
@@ -85,11 +87,12 @@ export class MediaUploader {
   addFiles(fileList) {
     this._setError("");
     const incoming = Array.from(fileList);
-    if (this.queue.length + incoming.length > this.maxFiles) {
+    if (this.uploadedAssets.length + this.queue.length + incoming.length > this.maxFiles) {
       this._setError(this.root.dataset.msgTooMany || "Too many files selected.");
       return;
     }
 
+    let addedCount = 0;
     for (const file of incoming) {
       if (file.type && !ALLOWED_MIME_TYPES.has(file.type)) {
         this._setError(
@@ -107,9 +110,13 @@ export class MediaUploader {
         file,
         objectUrl,
       });
+      addedCount += 1;
     }
 
     this._renderPreviews();
+    if (this.autoUpload && addedCount > 0 && !this.isUploading) {
+      void this.upload();
+    }
   }
 
   removeQueuedFile(entryId) {
@@ -164,6 +171,9 @@ export class MediaUploader {
   }
 
   async upload() {
+    if (this.isUploading) {
+      return [];
+    }
     this._setError("");
     if (this.queue.length === 0) {
       this._setError(this.root.dataset.msgNoFiles || "Please select at least one image.");
@@ -176,8 +186,12 @@ export class MediaUploader {
       formData.append("files", entry.file, entry.file.name);
     }
 
+    this.isUploading = true;
     if (this.uploadBtn instanceof HTMLButtonElement) {
       this.uploadBtn.disabled = true;
+    }
+    if (this.input instanceof HTMLInputElement) {
+      this.input.disabled = true;
     }
     this._setStatus(this.root.dataset.msgUploading || "Uploading...");
 
@@ -205,6 +219,9 @@ export class MediaUploader {
       return assets;
     } catch (error) {
       this._setStatus("");
+      if (this.autoUpload) {
+        this.clearQueue();
+      }
       if (error instanceof ApiClientError && error.message) {
         this._setError(error.message);
       } else {
@@ -212,6 +229,10 @@ export class MediaUploader {
       }
       return [];
     } finally {
+      this.isUploading = false;
+      if (this.input instanceof HTMLInputElement) {
+        this.input.disabled = false;
+      }
       if (this.uploadBtn instanceof HTMLButtonElement) {
         this.uploadBtn.disabled = this.queue.length === 0;
       }

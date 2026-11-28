@@ -24,5 +24,7 @@ class Settings(BaseSettings):
     media_root: str = "storage/media"
     media_max_bytes: int = 10 * 1024 * 1024
     media_max_files_per_request: int = 10
+    public_media_rate_limit_max_uploads: int = 20
+    public_media_rate_limit_window_seconds: int = 60 * 15
     login_rate_limit_max_attempts: int = 5
     login_rate_limit_window_seconds: int = 60 * 15

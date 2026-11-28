@@ -18,6 +18,7 @@
   --color-on-cobalt: #FFFFFF;
   --color-terracotta: #8B4513;
   --color-terracotta-soft: #F6E9DE;
+  --color-danger: #DC2626;
   --color-ink: #1F2933;
   --color-ink-muted: #5C534A;
   --color-clay-border: #E5D9C8;
@@ -53,6 +54,7 @@
     --color-on-cobalt: #FBF7F0;
     --color-terracotta: #E29A67;
     --color-terracotta-soft: #332217;
+    --color-danger: #F87171;
     --color-ink: #F4EFE6;
     --color-ink-muted: #BFB4A6;
     --color-clay-border: #3B332A;
@@ -148,6 +150,12 @@
   initial-value: #F6E9DE;
 }
 
+@property --color-danger {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #DC2626;
+}
+
 @property --color-ink {
   syntax: "<color>";
   inherits: true;
@@ -180,6 +188,7 @@
       --color-on-cobalt,
       --color-terracotta,
       --color-terracotta-soft,
+      --color-danger,
       --color-ink,
       --color-ink-muted,
       --color-clay-border;
@@ -255,7 +264,11 @@
   }
 
   .form-label {
-    @apply block text-sm font-medium text-ink;
+    @apply block text-sm font-medium text-pretty text-ink;
+  }
+
+  .form-required {
+    @apply ml-0.5 font-semibold text-danger;
   }
 
   .form-input {

@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% macro required_mark() %}<span class="form-required" aria-hidden="true">*</span>{% endmacro %}
+
+{% block content %}
+<section class="bg-gradient-to-br from-cream via-cream to-cream-deep/80 py-12 sm:py-16">
+  <div class="mx-auto max-w-2xl px-4 sm:px-6">
+    <div class="surface-card p-6 sm:p-8">
+      <div class="space-y-2">
+        <p class="eyebrow">{{ t("workshop_apply.eyebrow") }}</p>
+        <h1 class="font-display text-2xl font-bold text-cobalt">{{ t("workshop_apply.heading") }}</h1>
+        <p class="text-sm leading-relaxed text-ink-muted">{{ t("workshop_apply.lead") }}</p>
+      </div>
+
+      <div
+        data-apply-success
+        hidden
+        class="mt-6 space-y-5 rounded-xl border border-clay-border bg-cream-deep/60 p-6"
+      >
+        <div class="space-y-2">
+          <p class="eyebrow">{{ t("workshop_apply.success.eyebrow") }}</p>
+          <h2 class="font-display text-xl font-bold text-cobalt">{{ t("workshop_apply.success.heading") }}</h2>
+          <p data-success-message class="text-sm leading-relaxed text-ink-muted">{{ t("workshop_apply.success.message") }}</p>
+        </div>
+
+        <dl class="grid grid-cols-1 gap-4 border-t border-clay-border pt-4 text-sm sm:grid-cols-3">
+          <div>
+            <dt class="text-xs font-semibold uppercase text-terracotta">{{ t("workshop_apply.success.code_label") }}</dt>
+            <dd data-success-code class="mt-1 font-display text-base font-bold text-cobalt"></dd>
+          </div>
+          <div>
+            <dt class="text-xs font-semibold uppercase text-terracotta">{{ t("workshop_apply.success.slug_label") }}</dt>
+            <dd data-success-slug class="mt-1 break-all font-medium text-ink"></dd>
+          </div>
+          <div>
+            <dt class="text-xs font-semibold uppercase text-terracotta">{{ t("workshop_apply.success.status_label") }}</dt>
+            <dd class="mt-1 font-semibold text-terracotta">{{ t("workshop_apply.success.status_pending") }}</dd>
+          </div>
+        </dl>
+
+        <div class="pt-2">
+          <a href="/" class="btn-primary">{{ t("workshop_apply.success.back_home") }}</a>
+        </div>
+      </div>
+
+      <div
+        data-apply-alert
+        role="alert"
+        hidden
+        class="alert-error mt-5 text-pretty"
+      ></div>
+
+      <form
+        id="workshop-apply-form"
+        action="/api/workshop-applications"
+        method="post"
+        data-workshop-apply-form
+        data-endpoint="/api/workshop-applications"
+        data-msg-validation="{{ t('auth.errors.validation_failed') }}"
+        data-msg-artisan-name="{{ t('workshop_apply.errors.artisan_name_invalid') }}"
+        data-msg-email-invalid="{{ t('auth.errors.email_invalid') }}"
+        data-msg-phone-invalid="{{ t('workshop_apply.errors.phone_invalid') }}"
+        data-msg-password-short="{{ t('auth.errors.password_too_short') }}"
+        data-msg-password-long="{{ t('auth.errors.password_too_long') }}"
+        data-msg-password-weak="{{ t('auth.errors.password_weak') }}"
+        data-msg-password-mismatch="{{ t('auth.errors.password_mismatch') }}"
+        data-msg-name-vi="{{ t('workshop_apply.errors.name_vi_invalid') }}"
+        data-msg-address-vi="{{ t('workshop_apply.errors.address_vi_invalid') }}"
+        data-msg-history-vi="{{ t('workshop_apply.errors.history_vi_invalid') }}"
+        data-msg-opening-hours="{{ t('workshop_apply.errors.opening_hours_invalid') }}"
+        data-msg-closing-time="{{ t('workshop_apply.errors.closing_time_invalid') }}"
+        data-msg-latitude="{{ t('workshop_apply.errors.latitude_invalid') }}"
+        data-msg-longitude="{{ t('workshop_apply.errors.longitude_invalid') }}"
+        data-msg-coords-pair="{{ t('workshop_apply.errors.coordinates_pair_required') }}"
+        data-msg-workshop-media="{{ t('workshop_apply.errors.workshop_media_required') }}"
+        data-msg-certificate-media="{{ t('workshop_apply.errors.certificate_media_required') }}"
+        data-msg-submitting="{{ t('workshop_apply.submitting') }}"
+        data-msg-submit="{{ t('workshop_apply.submit') }}"
+        data-msg-generic="{{ t('auth.errors.generic') }}"
+        class="mt-6 space-y-8"
+      >
+        {{ csrf_input() }}
+
+        <fieldset class="space-y-4 border-t border-clay-border/80 pt-5">
+          <legend class="font-display text-base font-semibold text-pretty text-cobalt">{{ t("workshop_apply.section_account") }}</legend>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="apply-artisan-name" class="form-label">{{ t("workshop_apply.artisan_name_label") }}{{ required_mark() }}</label>
+              <input id="apply-artisan-name" name="artisan_name" type="text" required autocomplete="name" placeholder="{{ t('workshop_apply.artisan_name_placeholder') }}" class="form-input">
+              <p data-field-error="artisan_name" hidden class="form-error"></p>
+            </div>
+
+            <div>
+              <label for="apply-phone" class="form-label">{{ t("workshop_apply.phone_label") }}{{ required_mark() }}</label>
+              <input id="apply-phone" name="phone" type="tel" required autocomplete="tel" placeholder="{{ t('workshop_apply.phone_placeholder') }}" class="form-input">
+              <p data-field-error="phone" hidden class="form-error"></p>
+            </div>
+          </div>
+
+          <div>
+            <label for="apply-email" class="form-label">{{ t("workshop_apply.email_label") }}{{ required_mark() }}</label>
+            <input id="apply-email" name="email" type="email" required autocomplete="email" placeholder="{{ t('workshop_apply.email_placeholder') }}" class="form-input">
+            <p data-field-error="email" hidden class="form-error"></p>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="apply-password" class="form-label">{{ t("workshop_apply.password_label") }}{{ required_mark() }}</label>
+              <input id="apply-password" name="password" type="password" required autocomplete="new-password" class="form-input">
+              <p class="mt-1 text-xs text-ink-muted">{{ t("auth.register.password_hint") }}</p>
+              <p data-field-error="password" hidden class="form-error"></p>
+            </div>
+
+            <div>
+              <label for="apply-confirm-password" class="form-label">{{ t("workshop_apply.confirm_password_label") }}{{ required_mark() }}</label>
+              <input id="apply-confirm-password" name="confirm_password" type="password" required autocomplete="new-password" class="form-input">
+              <p data-field-error="confirm_password" hidden class="form-error"></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="space-y-4 border-t border-clay-border/80 pt-5">
+          <legend class="font-display text-base font-semibold text-pretty text-cobalt">{{ t("workshop_apply.section_workshop") }}</legend>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="apply-name-vi" class="form-label">{{ t("workshop_apply.name_vi_label") }}{{ required_mark() }}</label>
+              <input id="apply-name-vi" name="name_vi" type="text" required placeholder="{{ t('workshop_apply.name_vi_placeholder') }}" class="form-input">
+              <p data-field-error="name_vi" hidden class="form-error"></p>
+            </div>
+
+            <div>
+              <label for="apply-name-en" class="form-label">{{ t("workshop_apply.name_en_label") }}</label>
+              <input id="apply-name-en" name="name_en" type="text" placeholder="{{ t('workshop_apply.name_en_placeholder') }}" class="form-input">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="apply-tagline-vi" class="form-label">{{ t("workshop_apply.tagline_vi_label") }}</label>
+              <input id="apply-tagline-vi" name="tagline_vi" type="text" placeholder="{{ t('workshop_apply.tagline_vi_placeholder') }}" class="form-input">
+            </div>
+
+            <div>
+              <label for="apply-tagline-en" class="form-label">{{ t("workshop_apply.tagline_en_label") }}</label>
+              <input id="apply-tagline-en" name="tagline_en" type="text" placeholder="{{ t('workshop_apply.tagline_en_placeholder') }}" class="form-input">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="apply-address-vi" class="form-label">{{ t("workshop_apply.address_vi_label") }}{{ required_mark() }}</label>
+              <input id="apply-address-vi" name="address_vi" type="text" required placeholder="{{ t('workshop_apply.address_vi_placeholder') }}" class="form-input">
+              <p data-field-error="address_vi" hidden class="form-error"></p>
+            </div>
+
+            <div>
+              <label for="apply-address-en" class="form-label">{{ t("workshop_apply.address_en_label") }}</label>
+              <input id="apply-address-en" name="address_en" type="text" placeholder="{{ t('workshop_apply.address_en_placeholder') }}" class="form-input">
+            </div>
+          </div>
+
+          <div>
+            <label for="apply-history-vi" class="form-label">{{ t("workshop_apply.history_vi_label") }}{{ required_mark() }}</label>
+            <textarea id="apply-history-vi" name="history_vi" rows="4" required placeholder="{{ t('workshop_apply.history_vi_placeholder') }}" class="form-input"></textarea>
+            <p data-field-error="history_vi" hidden class="form-error"></p>
+          </div>
+
+          <div>
+            <label for="apply-history-en" class="form-label">{{ t("workshop_apply.history_en_label") }}</label>
+            <textarea id="apply-history-en" name="history_en" rows="3" placeholder="{{ t('workshop_apply.history_en_placeholder') }}" class="form-input"></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="apply-opening-time" class="form-label">{{ t("workshop_apply.opening_time_label") }}{{ required_mark() }}</label>
+              <input id="apply-opening-time" name="opening_time" type="time" required value="08:00" class="form-input">
+              <p data-field-error="opening_time" hidden class="form-error"></p>
+            </div>
+
+            <div>
+              <label for="apply-closing-time" class="form-label">{{ t("workshop_apply.closing_time_label") }}{{ required_mark() }}</label>
+              <input id="apply-closing-time" name="closing_time" type="time" required value="17:30" class="form-input">
+              <p data-field-error="closing_time" hidden class="form-error"></p>
+            </div>
+          </div>
+
+          <div class="space-y-2.5 pt-1">
+            <label class="flex items-start gap-2.5 text-sm leading-relaxed text-pretty text-ink">
+              <input id="apply-is-open-now" name="is_open_now" type="checkbox" checked class="mt-0.5 h-4 w-4 shrink-0 rounded border-clay-border">
+              <span>{{ t("workshop_apply.is_open_now_label") }}</span>
+            </label>
+            <label class="flex items-start gap-2.5 text-sm leading-relaxed text-pretty text-ink">
+              <input id="apply-has-experience" name="has_experience" type="checkbox" class="mt-0.5 h-4 w-4 shrink-0 rounded border-clay-border">
+              <span>{{ t("workshop_apply.has_experience_label") }}</span>
+            </label>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="apply-experience-vi" class="form-label">{{ t("workshop_apply.experience_desc_vi_label") }}</label>
+              <textarea id="apply-experience-vi" name="experience_desc_vi" rows="2" class="form-input"></textarea>
+            </div>
+            <div>
+              <label for="apply-experience-en" class="form-label">{{ t("workshop_apply.experience_desc_en_label") }}</label>
+              <textarea id="apply-experience-en" name="experience_desc_en" rows="2" class="form-input"></textarea>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="apply-latitude" class="form-label">{{ t("workshop_apply.latitude_label") }}</label>
+              <input id="apply-latitude" name="latitude" type="number" step="0.000001" min="-90" max="90" placeholder="20.977200" class="form-input">
+              <p data-field-error="latitude" hidden class="form-error"></p>
+            </div>
+            <div>
+              <label for="apply-longitude" class="form-label">{{ t("workshop_apply.longitude_label") }}</label>
+              <input id="apply-longitude" name="longitude" type="number" step="0.000001" min="-180" max="180" placeholder="105.914500" class="form-input">
+              <p data-field-error="longitude" hidden class="form-error"></p>
+            </div>
+          </div>
+
+          <div
+            id="workshop-coord-picker"
+            data-coord-picker
+            class="rounded-xl border border-clay-border bg-cream-deep/60 p-4 text-xs leading-relaxed text-pretty text-ink-muted"
+          >
+            {{ t("workshop_apply.coord_picker_hint") }}
+          </div>
+        </fieldset>
+
+        <fieldset class="space-y-6 border-t border-clay-border/80 pt-5">
+          <legend class="font-display text-base font-semibold text-pretty text-cobalt">{{ t("workshop_apply.section_media") }}</legend>
+
+          {% for group_key, category, field_name, label_key in [
+            ("workshop", "workshop", "workshop_media_ids", "workshop_apply.workshop_photos_label"),
+            ("certificate", "certificate", "certificate_media_ids", "workshop_apply.certificate_photos_label"),
+          ] %}
+            <div
+              data-media-uploader
+              data-auto-upload="true"
+              data-uploader-group="{{ group_key }}"
+              data-endpoint="/api/workshop-applications/media"
+              data-category="{{ category }}"
+              data-max-files="{{ max_files }}"
+              data-max-bytes="{{ max_bytes }}"
+              data-msg-no-files="{{ t('media.errors.no_files') }}"
+              data-msg-too-many="{{ t('media.errors.too_many_files', max_files=max_files) }}"
+              data-msg-too-large="{{ t('media.errors.too_large', max_mb=max_mb) }}"
+              data-msg-invalid-format="{{ t('media.errors.invalid_format') }}"
+              data-msg-uploading="{{ t('media.uploader.uploading') }}"
+              data-msg-upload-failed="{{ t('media.errors.upload_failed') }}"
+              data-msg-remove-aria="{{ t('media.uploader.remove_aria') }}"
+              class="space-y-3"
+            >
+              <p class="form-label">{{ t(label_key) }}{{ required_mark() }}</p>
+              <input type="hidden" name="{{ field_name }}" data-media-ids value="">
+
+              <div
+                data-media-dropzone
+                class="rounded-xl border border-clay-border bg-cream-deep/60 p-4 text-center transition-colors"
+              >
+                <p class="text-sm font-medium text-ink">{{ t("media.uploader.dropzone_prompt") }}</p>
+                <p class="mt-1 text-xs text-ink-muted">{{ t("media.uploader.dropzone_hint", max_files=max_files, max_mb=max_mb) }}</p>
+                <div class="mt-3 flex items-center justify-center">
+                  <label class="btn-primary cursor-pointer">
+                    <span>{{ t("media.uploader.upload_button") }}</span>
+                    <input type="file" accept="image/jpeg,image/png,image/webp" multiple data-media-input class="sr-only">
+                  </label>
+                </div>
+              </div>
+
+              <p data-media-status hidden class="text-xs font-medium text-cobalt"></p>
+              <div data-media-error role="alert" hidden class="alert-error text-pretty"></div>
+              <div data-media-previews class="grid grid-cols-2 gap-3 sm:grid-cols-3"></div>
+              <div data-uploaded-list="{{ group_key }}" class="grid grid-cols-2 gap-3 sm:grid-cols-3"></div>
+              <p data-field-error="{{ field_name }}" hidden class="form-error"></p>
+            </div>
+          {% endfor %}
+        </fieldset>
+
+        <button type="submit" data-apply-submit class="btn-primary w-full justify-center">
+          {{ t("workshop_apply.submit") }}
+        </button>
+      </form>
+
+      <div class="mt-6 border-t border-clay-border/80 pt-5 text-sm text-ink-muted">
+        <p class="leading-relaxed">
+          {{ t("workshop_apply.have_account") }}
+          <a href="/dang-nhap" class="inline-block whitespace-nowrap font-semibold text-cobalt hover:underline">{{ t("workshop_apply.login_link") }}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts_extra %}
+  <script type="module" src="{{ static_url('/static/js/media_uploader.js') }}" defer></script>
+  <script type="module" src="{{ static_url('/static/js/workshop_apply.js') }}" defer></script>
+{% endblock %}

@@ -32,6 +32,7 @@ _NON_BREAKING_PHRASES: dict[Lang, tuple[str, ...]] = {
         "Triển lãm số",
         "lô gốm QR",
         "lô gốm",
+        "nhiều xưởng",
         "xưởng gốm",
         "đơn báo giá",
         "báo giá",
@@ -51,6 +52,30 @@ _NON_BREAKING_PHRASES: dict[Lang, tuple[str, ...]] = {
         "ký tự",
         "chữ cái",
         "chữ số",
+        "Tiếng Việt",
+        "Tiếng Anh",
+        "giờ mở cửa",
+        "giờ đóng cửa",
+        "số điện thoại",
+        "mật khẩu",
+        "họ tên",
+        "địa chỉ",
+        "chứng nhận",
+        "giấy tờ",
+        "làng nghề",
+        "trải nghiệm",
+        "vuốt gốm",
+        "vẽ men",
+        "khẩu hiệu",
+        "đường dẫn",
+        "mã hồ sơ",
+        "chờ duyệt",
+        "mở xưởng",
+        "chủ xưởng",
+        "hồ sơ",
+        "tải lên",
+        "thẩm định",
+        "kích hoạt",
     ),
     "en": (
         "vCraft Bát Tràng",
@@ -64,6 +89,16 @@ _NON_BREAKING_PHRASES: dict[Lang, tuple[str, ...]] = {
         "family workshops",
         "kiln batch",
         "batch progress",
+        "Opening Time",
+        "Closing Time",
+        "Workshop Name",
+        "Contact Phone",
+        "Sign-in Email",
+        "Craft Story",
+        "Pending Review",
+        "Application Code",
+        "Artisan Account",
+        "Confirm Password",
     ),
 }
 
@@ -172,6 +207,21 @@ def _flatten_catalog(data: dict[str, object], prefix: str = "") -> dict[str, str
     return flattened
 
 
+def _is_plain_text_key(key: str) -> bool:
+    return (
+        key in _PLAIN_TEXT_KEYS
+        or key.endswith(("_aria", ".page_title"))
+        or key.startswith(
+            (
+                "auth.errors.",
+                "media.errors.",
+                "workshop_apply.errors.",
+                "workshop_apply.success.message",
+            )
+        )
+    )
+
+
 @lru_cache(maxsize=4)
 def load_catalog(lang: Lang) -> dict[str, str]:
     """Load and cache the flattened key->text translation map for a language."""
@@ -181,13 +231,7 @@ def load_catalog(lang: Lang) -> dict[str, str]:
         return {}
     flattened = _flatten_catalog({str(k): v for k, v in raw.items()})
     return {
-        key: (
-            value
-            if key in _PLAIN_TEXT_KEYS
-            or key.endswith(("_aria", ".page_title"))
-            or key.startswith(("auth.errors.", "media.errors."))
-            else _apply_typography(value, lang)
-        )
+        key: value if _is_plain_text_key(key) else _apply_typography(value, lang)
         for key, value in flattened.items()
     }
 
@@ -201,4 +245,7 @@ def translate(key: str, lang: str = DEFAULT_LANG, **params: object) -> str:
         template = load_catalog(DEFAULT_LANG).get(key)
     if template is None:
         return key
-    return template.format(**params) if params else template
+    if not params:
+        return template
+    rendered = template.format(**params)
+    return rendered if _is_plain_text_key(key) else _bind_quantity_units(rendered)

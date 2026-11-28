@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% macro required_mark() %}<span class="form-required" aria-hidden="true">*</span>{% endmacro %}
+
 {% block content %}
 <section class="bg-gradient-to-br from-cream via-cream to-cream-deep/80 py-12 sm:py-16">
   <div class="mx-auto max-w-md px-4 sm:px-6">
@@ -38,7 +40,7 @@
         {% endif %}
 
         <div>
-          <label for="register-full-name" class="form-label">{{ t("auth.register.full_name_label") }}</label>
+          <label for="register-full-name" class="form-label">{{ t("auth.register.full_name_label") }}{{ required_mark() }}</label>
           <input
             id="register-full-name"
             name="full_name"
@@ -62,7 +64,7 @@
         </div>
 
         <div>
-          <label for="register-email" class="form-label">{{ t("auth.register.email_label") }}</label>
+          <label for="register-email" class="form-label">{{ t("auth.register.email_label") }}{{ required_mark() }}</label>
           <input
             id="register-email"
             name="email"
@@ -84,7 +86,7 @@
         </div>
 
         <div>
-          <label for="register-password" class="form-label">{{ t("auth.register.password_label") }}</label>
+          <label for="register-password" class="form-label">{{ t("auth.register.password_label") }}{{ required_mark() }}</label>
           <input
             id="register-password"
             name="password"
@@ -109,7 +111,7 @@
         </div>
 
         <div>
-          <label for="register-confirm-password" class="form-label">{{ t("auth.register.confirm_password_label") }}</label>
+          <label for="register-confirm-password" class="form-label">{{ t("auth.register.confirm_password_label") }}{{ required_mark() }}</label>
           <input
             id="register-confirm-password"
             name="confirm_password"
