@@ -239,6 +239,7 @@
           ] %}
             <div
               data-media-uploader
+              data-auto-upload="true"
               data-uploader-group="{{ group_key }}"
               data-endpoint="/api/workshop-applications/media"
               data-category="{{ category }}"
@@ -262,14 +263,11 @@
               >
                 <p class="text-sm font-medium text-ink">{{ t("media.uploader.dropzone_prompt") }}</p>
                 <p class="mt-1 text-xs text-ink-muted">{{ t("media.uploader.dropzone_hint", max_files=max_files, max_mb=max_mb) }}</p>
-                <div class="mt-3 flex flex-wrap items-center justify-center gap-2.5">
-                  <label class="btn-secondary cursor-pointer">
-                    <span>{{ t("media.uploader.select_button") }}</span>
+                <div class="mt-3 flex items-center justify-center">
+                  <label class="btn-primary cursor-pointer">
+                    <span>{{ t("media.uploader.upload_button") }}</span>
                     <input type="file" accept="image/jpeg,image/png,image/webp" multiple data-media-input class="sr-only">
                   </label>
-                  <button type="button" data-media-upload disabled class="btn-primary">
-                    {{ t("media.uploader.upload_button") }}
-                  </button>
                 </div>
               </div>
 

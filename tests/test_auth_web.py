@@ -57,9 +57,9 @@ def _seed_user(
             "/dang-ky",
             "vi",
             "Đăng ký tài khoản | vCraft Bát Tràng",
-            "Tạo tài\u00a0khoản Buyer\u00a0mới",
+            "Tạo tài\u00a0khoản mới",
         ),
-        ("/dang-ky", "en", "Create Account | vCraft Bát Tràng", "Create a\u00a0Buyer Account"),
+        ("/dang-ky", "en", "Create Account | vCraft Bát Tràng", "Create a\u00a0New Account"),
     ],
 )
 def test_auth_pages_render_bilingually_with_validation_and_vary_cookie(
@@ -83,6 +83,7 @@ def test_auth_pages_render_bilingually_with_validation_and_vary_cookie(
     assert "/static/js/auth.js" in html
     assert 'type="email"' in html
     assert "required" in html
+    assert 'class="form-required"' in html
     assert "demo" not in html.lower()
     assert "inline-block whitespace-nowrap" in html
     if path == "/dang-ky":

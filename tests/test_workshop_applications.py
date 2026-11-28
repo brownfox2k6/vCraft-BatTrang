@@ -59,6 +59,8 @@ def test_workshop_apply_page_renders_bilingual_form_and_redirects_active_artisan
         assert 'name="opening_time"' in vi_resp.text
         assert 'name="closing_time"' in vi_resp.text
         assert 'class="form-required"' in vi_resp.text
+        assert 'data-auto-upload="true"' in vi_resp.text
+        assert "chọn ảnh" not in vi_plain.lower()
         assert "tùy chọn" not in vi_plain.lower()
         assert "/static/js/media_uploader.js" in vi_resp.text
         assert "/static/js/workshop_apply.js" in vi_resp.text
@@ -71,6 +73,7 @@ def test_workshop_apply_page_renders_bilingual_form_and_redirects_active_artisan
         assert 'name="opening_time"' in en_resp.text
         assert 'name="closing_time"' in en_resp.text
         assert 'class="form-required"' in en_resp.text
+        assert "choose images" not in en_plain.lower()
         assert "optional" not in en_plain.lower()
 
     # Seed active Artisan -> GET /dang-ky-xuong redirects 303 to /nghe-nhan

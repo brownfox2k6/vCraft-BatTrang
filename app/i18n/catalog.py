@@ -32,6 +32,7 @@ _NON_BREAKING_PHRASES: dict[Lang, tuple[str, ...]] = {
         "Triển lãm số",
         "lô gốm QR",
         "lô gốm",
+        "nhiều xưởng",
         "xưởng gốm",
         "đơn báo giá",
         "báo giá",
