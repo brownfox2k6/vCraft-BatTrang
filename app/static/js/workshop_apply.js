@@ -7,6 +7,7 @@ import { ApiClientError, apiFetch } from "./api.js";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^[0-9+\-\s().]{8,32}$/;
+const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/;
 
 function setAlert(alertEl, message) {
   if (!alertEl) {
@@ -17,8 +18,9 @@ function setAlert(alertEl, message) {
 }
 
 function setFieldError(form, fieldName, message) {
-  const input = form.querySelector(`[name="${fieldName}"]`);
-  const errorEl = form.querySelector(`[data-field-error="${fieldName}"]`);
+  const mappedField = fieldName === "opening_hours" ? "opening_time" : fieldName;
+  const input = form.querySelector(`[name="${mappedField}"]`);
+  const errorEl = form.querySelector(`[data-field-error="${mappedField}"]`);
   if (input) {
     input.setAttribute("aria-invalid", message ? "true" : "false");
     input.classList.toggle("form-input-error", Boolean(message));
@@ -57,7 +59,8 @@ function validateForm(form, values) {
   const nameVi = String(values.name_vi || "").trim();
   const addressVi = String(values.address_vi || "").trim();
   const historyVi = String(values.history_vi || "").trim();
-  const openingHours = String(values.opening_hours || "").trim();
+  const openingTime = String(values.opening_time || "").trim();
+  const closingTime = String(values.closing_time || "").trim();
   const latRaw = String(values.latitude || "").trim();
   const lngRaw = String(values.longitude || "").trim();
 
@@ -89,8 +92,13 @@ function validateForm(form, values) {
   if (historyVi.length < 10) {
     errors.history_vi = form.dataset.msgHistoryVi || "";
   }
-  if (openingHours.length < 3 || openingHours.length > 80) {
-    errors.opening_hours = form.dataset.msgOpeningHours || "";
+  if (!TIME_PATTERN.test(openingTime)) {
+    errors.opening_time = form.dataset.msgOpeningHours || "";
+  }
+  if (!TIME_PATTERN.test(closingTime)) {
+    errors.closing_time = form.dataset.msgOpeningHours || "";
+  } else if (TIME_PATTERN.test(openingTime) && closingTime <= openingTime) {
+    errors.closing_time = form.dataset.msgClosingTime || "";
   }
   if (latRaw || lngRaw) {
     const lat = Number(latRaw);
@@ -182,6 +190,8 @@ function initWorkshopApplyForm(form) {
 
     const latRaw = String(values.latitude || "").trim();
     const lngRaw = String(values.longitude || "").trim();
+    const openingTime = String(values.opening_time || "").trim();
+    const closingTime = String(values.closing_time || "").trim();
     const payload = {
       artisan_name: String(values.artisan_name || ""),
       email: String(values.email || ""),
@@ -195,7 +205,7 @@ function initWorkshopApplyForm(form) {
       address_en: String(values.address_en || "") || null,
       history_vi: String(values.history_vi || ""),
       history_en: String(values.history_en || "") || null,
-      opening_hours: String(values.opening_hours || ""),
+      opening_hours: `${openingTime} - ${closingTime}`,
       is_open_now: form.querySelector('[name="is_open_now"]')?.checked ?? true,
       has_experience: form.querySelector('[name="has_experience"]')?.checked ?? false,
       experience_desc_vi: String(values.experience_desc_vi || "") || null,

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% macro required_mark() %}<span class="form-required" aria-hidden="true">*</span>{% endmacro %}
+
 {% block content %}
 <section class="bg-gradient-to-br from-cream via-cream to-cream-deep/80 py-12 sm:py-16">
   <div class="mx-auto max-w-2xl px-4 sm:px-6">
@@ -66,6 +68,7 @@
         data-msg-address-vi="{{ t('workshop_apply.errors.address_vi_invalid') }}"
         data-msg-history-vi="{{ t('workshop_apply.errors.history_vi_invalid') }}"
         data-msg-opening-hours="{{ t('workshop_apply.errors.opening_hours_invalid') }}"
+        data-msg-closing-time="{{ t('workshop_apply.errors.closing_time_invalid') }}"
         data-msg-latitude="{{ t('workshop_apply.errors.latitude_invalid') }}"
         data-msg-longitude="{{ t('workshop_apply.errors.longitude_invalid') }}"
         data-msg-coords-pair="{{ t('workshop_apply.errors.coordinates_pair_required') }}"
@@ -79,38 +82,38 @@
         {{ csrf_input() }}
 
         <fieldset class="space-y-4 border-t border-clay-border/80 pt-5">
-          <legend class="font-display text-base font-semibold text-cobalt">{{ t("workshop_apply.section_account") }}</legend>
+          <legend class="font-display text-base font-semibold text-pretty text-cobalt">{{ t("workshop_apply.section_account") }}</legend>
 
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label for="apply-artisan-name" class="form-label">{{ t("workshop_apply.artisan_name_label") }} *</label>
+              <label for="apply-artisan-name" class="form-label">{{ t("workshop_apply.artisan_name_label") }}{{ required_mark() }}</label>
               <input id="apply-artisan-name" name="artisan_name" type="text" required autocomplete="name" placeholder="{{ t('workshop_apply.artisan_name_placeholder') }}" class="form-input">
               <p data-field-error="artisan_name" hidden class="form-error"></p>
             </div>
 
             <div>
-              <label for="apply-phone" class="form-label">{{ t("workshop_apply.phone_label") }} *</label>
+              <label for="apply-phone" class="form-label">{{ t("workshop_apply.phone_label") }}{{ required_mark() }}</label>
               <input id="apply-phone" name="phone" type="tel" required autocomplete="tel" placeholder="{{ t('workshop_apply.phone_placeholder') }}" class="form-input">
               <p data-field-error="phone" hidden class="form-error"></p>
             </div>
           </div>
 
           <div>
-            <label for="apply-email" class="form-label">{{ t("workshop_apply.email_label") }} *</label>
+            <label for="apply-email" class="form-label">{{ t("workshop_apply.email_label") }}{{ required_mark() }}</label>
             <input id="apply-email" name="email" type="email" required autocomplete="email" placeholder="{{ t('workshop_apply.email_placeholder') }}" class="form-input">
             <p data-field-error="email" hidden class="form-error"></p>
           </div>
 
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label for="apply-password" class="form-label">{{ t("workshop_apply.password_label") }} *</label>
+              <label for="apply-password" class="form-label">{{ t("workshop_apply.password_label") }}{{ required_mark() }}</label>
               <input id="apply-password" name="password" type="password" required autocomplete="new-password" class="form-input">
               <p class="mt-1 text-xs text-ink-muted">{{ t("auth.register.password_hint") }}</p>
               <p data-field-error="password" hidden class="form-error"></p>
             </div>
 
             <div>
-              <label for="apply-confirm-password" class="form-label">{{ t("workshop_apply.confirm_password_label") }} *</label>
+              <label for="apply-confirm-password" class="form-label">{{ t("workshop_apply.confirm_password_label") }}{{ required_mark() }}</label>
               <input id="apply-confirm-password" name="confirm_password" type="password" required autocomplete="new-password" class="form-input">
               <p data-field-error="confirm_password" hidden class="form-error"></p>
             </div>
@@ -118,11 +121,11 @@
         </fieldset>
 
         <fieldset class="space-y-4 border-t border-clay-border/80 pt-5">
-          <legend class="font-display text-base font-semibold text-cobalt">{{ t("workshop_apply.section_workshop") }}</legend>
+          <legend class="font-display text-base font-semibold text-pretty text-cobalt">{{ t("workshop_apply.section_workshop") }}</legend>
 
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label for="apply-name-vi" class="form-label">{{ t("workshop_apply.name_vi_label") }} *</label>
+              <label for="apply-name-vi" class="form-label">{{ t("workshop_apply.name_vi_label") }}{{ required_mark() }}</label>
               <input id="apply-name-vi" name="name_vi" type="text" required placeholder="{{ t('workshop_apply.name_vi_placeholder') }}" class="form-input">
               <p data-field-error="name_vi" hidden class="form-error"></p>
             </div>
@@ -147,7 +150,7 @@
 
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label for="apply-address-vi" class="form-label">{{ t("workshop_apply.address_vi_label") }} *</label>
+              <label for="apply-address-vi" class="form-label">{{ t("workshop_apply.address_vi_label") }}{{ required_mark() }}</label>
               <input id="apply-address-vi" name="address_vi" type="text" required placeholder="{{ t('workshop_apply.address_vi_placeholder') }}" class="form-input">
               <p data-field-error="address_vi" hidden class="form-error"></p>
             </div>
@@ -159,7 +162,7 @@
           </div>
 
           <div>
-            <label for="apply-history-vi" class="form-label">{{ t("workshop_apply.history_vi_label") }} *</label>
+            <label for="apply-history-vi" class="form-label">{{ t("workshop_apply.history_vi_label") }}{{ required_mark() }}</label>
             <textarea id="apply-history-vi" name="history_vi" rows="4" required placeholder="{{ t('workshop_apply.history_vi_placeholder') }}" class="form-input"></textarea>
             <p data-field-error="history_vi" hidden class="form-error"></p>
           </div>
@@ -169,19 +172,27 @@
             <textarea id="apply-history-en" name="history_en" rows="3" placeholder="{{ t('workshop_apply.history_en_placeholder') }}" class="form-input"></textarea>
           </div>
 
-          <div>
-            <label for="apply-opening-hours" class="form-label">{{ t("workshop_apply.opening_hours_label") }} *</label>
-            <input id="apply-opening-hours" name="opening_hours" type="text" required placeholder="{{ t('workshop_apply.opening_hours_placeholder') }}" class="form-input">
-            <p data-field-error="opening_hours" hidden class="form-error"></p>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="apply-opening-time" class="form-label">{{ t("workshop_apply.opening_time_label") }}{{ required_mark() }}</label>
+              <input id="apply-opening-time" name="opening_time" type="time" required value="08:00" class="form-input">
+              <p data-field-error="opening_time" hidden class="form-error"></p>
+            </div>
+
+            <div>
+              <label for="apply-closing-time" class="form-label">{{ t("workshop_apply.closing_time_label") }}{{ required_mark() }}</label>
+              <input id="apply-closing-time" name="closing_time" type="time" required value="17:30" class="form-input">
+              <p data-field-error="closing_time" hidden class="form-error"></p>
+            </div>
           </div>
 
           <div class="space-y-2.5 pt-1">
-            <label class="flex items-center gap-2.5 text-sm text-ink">
-              <input id="apply-is-open-now" name="is_open_now" type="checkbox" checked class="h-4 w-4 rounded border-clay-border">
+            <label class="flex items-start gap-2.5 text-sm leading-relaxed text-pretty text-ink">
+              <input id="apply-is-open-now" name="is_open_now" type="checkbox" checked class="mt-0.5 h-4 w-4 shrink-0 rounded border-clay-border">
               <span>{{ t("workshop_apply.is_open_now_label") }}</span>
             </label>
-            <label class="flex items-center gap-2.5 text-sm text-ink">
-              <input id="apply-has-experience" name="has_experience" type="checkbox" class="h-4 w-4 rounded border-clay-border">
+            <label class="flex items-start gap-2.5 text-sm leading-relaxed text-pretty text-ink">
+              <input id="apply-has-experience" name="has_experience" type="checkbox" class="mt-0.5 h-4 w-4 shrink-0 rounded border-clay-border">
               <span>{{ t("workshop_apply.has_experience_label") }}</span>
             </label>
           </div>
@@ -213,14 +224,14 @@
           <div
             id="workshop-coord-picker"
             data-coord-picker
-            class="rounded-xl border border-clay-border bg-cream-deep/60 p-4 text-xs text-ink-muted"
+            class="rounded-xl border border-clay-border bg-cream-deep/60 p-4 text-xs leading-relaxed text-pretty text-ink-muted"
           >
             {{ t("workshop_apply.coord_picker_hint") }}
           </div>
         </fieldset>
 
         <fieldset class="space-y-6 border-t border-clay-border/80 pt-5">
-          <legend class="font-display text-base font-semibold text-cobalt">{{ t("workshop_apply.section_media") }}</legend>
+          <legend class="font-display text-base font-semibold text-pretty text-cobalt">{{ t("workshop_apply.section_media") }}</legend>
 
           {% for group_key, category, field_name, label_key in [
             ("workshop", "workshop", "workshop_media_ids", "workshop_apply.workshop_photos_label"),
@@ -242,7 +253,7 @@
               data-msg-remove-aria="{{ t('media.uploader.remove_aria') }}"
               class="space-y-3"
             >
-              <p class="form-label">{{ t(label_key) }} *</p>
+              <p class="form-label">{{ t(label_key) }}{{ required_mark() }}</p>
               <input type="hidden" name="{{ field_name }}" data-media-ids value="">
 
               <div
@@ -288,6 +299,6 @@
 {% endblock %}
 
 {% block scripts_extra %}
-  <script type="module" src="/static/js/media_uploader.js" defer></script>
-  <script type="module" src="/static/js/workshop_apply.js" defer></script>
+  <script type="module" src="{{ static_url('/static/js/media_uploader.js') }}" defer></script>
+  <script type="module" src="{{ static_url('/static/js/workshop_apply.js') }}" defer></script>
 {% endblock %}

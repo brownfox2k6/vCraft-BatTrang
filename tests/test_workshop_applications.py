@@ -53,15 +53,25 @@ def test_workshop_apply_page_renders_bilingual_form_and_redirects_active_artisan
     with make_client() as client:
         vi_resp = client.get("/dang-ky-xuong")
         assert vi_resp.status_code == 200
-        assert "Xã Bát Tràng" in vi_resp.text.replace("\u00a0", " ")
+        vi_plain = vi_resp.text.replace("\u00a0", " ")
+        assert "Xã Bát Tràng" in vi_plain
         assert 'id="workshop-coord-picker"' in vi_resp.text
+        assert 'name="opening_time"' in vi_resp.text
+        assert 'name="closing_time"' in vi_resp.text
+        assert 'class="form-required"' in vi_resp.text
+        assert "tùy chọn" not in vi_plain.lower()
         assert "/static/js/media_uploader.js" in vi_resp.text
         assert "/static/js/workshop_apply.js" in vi_resp.text
 
         client.cookies.set(LANG_COOKIE_NAME, "en")
         en_resp = client.get("/dang-ky-xuong")
         assert en_resp.status_code == 200
-        assert "Bát Tràng Commune" in en_resp.text.replace("\u00a0", " ")
+        en_plain = en_resp.text.replace("\u00a0", " ")
+        assert "Bát Tràng Commune" in en_plain
+        assert 'name="opening_time"' in en_resp.text
+        assert 'name="closing_time"' in en_resp.text
+        assert 'class="form-required"' in en_resp.text
+        assert "optional" not in en_plain.lower()
 
     # Seed active Artisan -> GET /dang-ky-xuong redirects 303 to /nghe-nhan
     hasher = Argon2PasswordHasher()
